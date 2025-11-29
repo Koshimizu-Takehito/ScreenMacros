@@ -14,7 +14,23 @@ enum ScreenID {
 }
 ```
 
-`@Screens` を付けるだけで、各 case が対応する画面を生成する `View` になります（例: `home` → `Home()`、`detail(id:)` → `Detail(id: id)`）。
+展開結果:
+
+```swift
+extension ScreenID: View, ScreenMacros.Screens {
+    @MainActor @ViewBuilder
+    var body: some View {
+        switch self {
+        case .home:
+            Home()
+        case .detail(id: let id):
+            Detail(id: id)
+        }
+    }
+}
+```
+
+これにより、`ScreenID` をそのまま SwiftUI の `View` として利用できます。
 
 ## 特徴
 

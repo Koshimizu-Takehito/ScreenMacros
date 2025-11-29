@@ -14,7 +14,23 @@ enum ScreenID {
 }
 ```
 
-With just `@Screens`, each case becomes a `View` that instantiates the corresponding screen (e.g., `home` → `Home()`, `detail(id:)` → `Detail(id: id)`).
+After macro expansion:
+
+```swift
+extension ScreenID: View, ScreenMacros.Screens {
+    @MainActor @ViewBuilder
+    var body: some View {
+        switch self {
+        case .home:
+            Home()
+        case .detail(id: let id):
+            Detail(id: id)
+        }
+    }
+}
+```
+
+You can now use `ScreenID` directly as a SwiftUI `View`.
 
 ## Features
 
