@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.1] - 2025-11-29
+
+### Added
+
+- Example iOS app demonstrating all ScreenMacros features
+
+### Changed
+
+- Replace static badges with dynamic Swift Package Index badges in README
+- Rename `ScreenID` to `Screen` in documentation examples for clarity
+
 ## [1.0.0] - 2024-11-29
 
 ### Added
@@ -31,6 +42,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Swift 6.0+
 - iOS 17.0+ / macOS 14.0+
 
-[Unreleased]: https://github.com/Koshimizu-Takehito/ScreenMacros/compare/v1.0.0...HEAD
+[Unreleased]: https://github.com/Koshimizu-Takehito/ScreenMacros/compare/v1.0.1...HEAD
+[1.0.1]: https://github.com/Koshimizu-Takehito/ScreenMacros/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/Koshimizu-Takehito/ScreenMacros/releases/tag/v1.0.0
 
