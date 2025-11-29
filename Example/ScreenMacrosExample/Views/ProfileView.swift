@@ -5,7 +5,7 @@ import SwiftUI
 /// Profile screen view.
 ///
 /// Note: This view uses `id` as the parameter name, which is mapped
-/// from `userId` in the `ScreenID.profile(userId:)` case using
+/// from `userId` in the `Screen.profile(userId:)` case using
 /// `@Screen(ProfileView.self, ["userId": "id"])`.
 struct ProfileView: View {
     let id: Int

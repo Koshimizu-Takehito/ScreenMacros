@@ -8,7 +8,7 @@
 
 ```swift
 @Screens
-enum ScreenID {
+enum Screen {
     case home
     case detail(id: Int)
 }
@@ -17,7 +17,7 @@ enum ScreenID {
 After macro expansion:
 
 ```swift
-extension ScreenID: View, ScreenMacros.Screens {
+extension Screen: View, ScreenMacros.Screens {
     @MainActor @ViewBuilder
     var body: some View {
         switch self {
@@ -30,7 +30,7 @@ extension ScreenID: View, ScreenMacros.Screens {
 }
 ```
 
-You can now use `ScreenID` directly as a SwiftUI `View`.
+You can now use `Screen` directly as a SwiftUI `View`.
 
 ## Features
 
@@ -124,7 +124,7 @@ Example/
     ├── ContentView.swift             # Main view with TabView
     ├── Info.plist
     ├── Screens/
-    │   ├── ScreenID.swift            # Navigation screens
+    │   ├── Screen.swift            # Navigation screens
     │   ├── TabScreen.swift           # Tab bar screens
     │   ├── ModalScreen.swift         # Sheet screens
     │   └── FullScreen.swift          # Full-screen cover screens
@@ -155,7 +155,7 @@ If no `@Screen` attributes are present, View types are inferred from case names 
 
 ```swift
 @Screens
-enum ScreenID {
+enum Screen {
     case gameOfLifeScreen  // → GameOfLifeScreen()
     case mosaicScreen      // → MosaicScreen()
 }
@@ -164,7 +164,7 @@ enum ScreenID {
 Expands to:
 
 ```swift
-extension ScreenID: View, ScreenMacros.Screens {
+extension Screen: View, ScreenMacros.Screens {
     @MainActor @ViewBuilder
     var body: some View {
         switch self {
@@ -212,7 +212,7 @@ When case labels differ from View initializer parameter names, provide a mapping
 
 ```swift
 @Screens
-enum ScreenID {
+enum Screen {
     @Screen(ProfileView.self, ["userId": "id", "showEdit": "editable"])
     case profile(userId: Int, showEdit: Bool)
 }
@@ -221,7 +221,7 @@ enum ScreenID {
 Expands to:
 
 ```swift
-extension ScreenID: View, ScreenMacros.Screens {
+extension Screen: View, ScreenMacros.Screens {
     @MainActor @ViewBuilder
     var body: some View {
         switch self {
@@ -252,7 +252,7 @@ Example:
 
 ```swift
 @Screens
-public enum ScreenID {
+public enum Screen {
     case homeScreen
 }
 ```
@@ -260,7 +260,7 @@ public enum ScreenID {
 Expands to:
 
 ```swift
-public extension ScreenID: View, ScreenMacros.Screens {
+public extension Screen: View, ScreenMacros.Screens {
     @MainActor @ViewBuilder
     public var body: some View {
         switch self {
@@ -286,7 +286,7 @@ This means `Optional`, `Result`, and other generic types work out of the box:
 
 ```swift
 @Screens
-enum ScreenID {
+enum Screen {
     case optionalDetail(id: Int?)
     case loadResult(result: Result<Int, Error>)
 }
@@ -295,7 +295,7 @@ enum ScreenID {
 Expands to:
 
 ```swift
-extension ScreenID: View, ScreenMacros.Screens {
+extension Screen: View, ScreenMacros.Screens {
     @MainActor @ViewBuilder
     var body: some View {
         switch self {
@@ -320,18 +320,18 @@ Use `navigationDestination(_:)` to register a navigation destination:
 
 ```swift
 @Screens
-enum ScreenID: Hashable {
+enum Screen: Hashable {
     case home
     case detail(id: Int)
 }
 
 struct ContentView: View {
-    @State private var path: [ScreenID] = []
+    @State private var path: [Screen] = []
 
     var body: some View {
         NavigationStack(path: $path) {
             HomeView()
-                .navigationDestination(ScreenID.self)
+                .navigationDestination(Screen.self)
         }
     }
 }
@@ -340,7 +340,7 @@ struct ContentView: View {
 This is equivalent to:
 
 ```swift
-.navigationDestination(for: ScreenID.self) { screen in
+.navigationDestination(for: Screen.self) { screen in
     screen
 }
 ```

@@ -12,7 +12,7 @@ import SwiftUI
 /// - Full-screen cover with `fullScreenCover(item:)`
 struct ContentView: View {
     @State private var selectedTab: TabScreen = .home
-    @State private var navigationPath: [ScreenID] = []
+    @State private var navigationPath: [Screen] = []
     @State private var presentedModal: ModalScreen?
     @State private var presentedFullScreen: FullScreen?
     @State private var showOnboarding = false
@@ -25,7 +25,7 @@ struct ContentView: View {
                     presentedModal: $presentedModal,
                     presentedFullScreen: $presentedFullScreen
                 )
-                .navigationDestination(ScreenID.self)
+                .navigationDestination(Screen.self)
             }
             .tabItem {
                 Label(TabScreen.home.title, systemImage: TabScreen.home.icon)
@@ -35,7 +35,7 @@ struct ContentView: View {
             // Search Tab
             NavigationStack {
                 Search()
-                    .navigationDestination(ScreenID.self)
+                    .navigationDestination(Screen.self)
             }
             .tabItem {
                 Label(TabScreen.search.title, systemImage: TabScreen.search.icon)
@@ -79,18 +79,18 @@ private struct HomeTabView: View {
             // Navigation Section
             Section {
                 ForEach(1...3, id: \.self) { id in
-                    NavigationLink(value: ScreenID.detail(id: id)) {
+                    NavigationLink(value: Screen.detail(id: id)) {
                         Label("Item \(id)", systemImage: "doc.fill")
                     }
                 }
 
-                NavigationLink(value: ScreenID.profile(userId: 42)) {
+                NavigationLink(value: Screen.profile(userId: 42)) {
                     Label("View Profile (Parameter Mapping)", systemImage: "person.circle")
                 }
             } header: {
                 Text("NavigationStack")
             } footer: {
-                Text("Uses .navigationDestination(ScreenID.self)")
+                Text("Uses .navigationDestination(Screen.self)")
             }
 
             // Modal Section

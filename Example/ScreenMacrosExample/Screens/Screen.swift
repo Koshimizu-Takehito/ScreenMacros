@@ -1,7 +1,7 @@
 import ScreenMacros
 import SwiftUI
 
-// MARK: - ScreenID
+// MARK: - Screen
 
 /// Main navigation screen identifiers.
 ///
@@ -15,11 +15,11 @@ import SwiftUI
 /// ```swift
 /// NavigationStack(path: $path) {
 ///     HomeView()
-///         .navigationDestination(ScreenID.self)
+///         .navigationDestination(Screen.self)
 /// }
 /// ```
 @Screens
-enum ScreenID: Hashable {
+enum Screen: Hashable {
     /// Home screen - inferred as `Home()`
     case home
 

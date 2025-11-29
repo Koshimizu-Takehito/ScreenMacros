@@ -19,7 +19,7 @@ struct Search: View {
                 .listRowBackground(Color.clear)
             } else {
                 ForEach(filteredItems, id: \.self) { id in
-                    NavigationLink(value: ScreenID.detail(id: id)) {
+                    NavigationLink(value: Screen.detail(id: id)) {
                         Label("Item \(id)", systemImage: "doc.fill")
                     }
                 }
@@ -40,6 +40,6 @@ struct Search: View {
 #Preview {
     NavigationStack {
         Search()
-            .navigationDestination(ScreenID.self)
+            .navigationDestination(Screen.self)
     }
 }

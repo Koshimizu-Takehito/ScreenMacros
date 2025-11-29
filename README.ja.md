@@ -8,7 +8,7 @@
 
 ```swift
 @Screens
-enum ScreenID {
+enum Screen {
     case home
     case detail(id: Int)
 }
@@ -17,7 +17,7 @@ enum ScreenID {
 展開結果:
 
 ```swift
-extension ScreenID: View, ScreenMacros.Screens {
+extension Screen: View, ScreenMacros.Screens {
     @MainActor @ViewBuilder
     var body: some View {
         switch self {
@@ -30,7 +30,7 @@ extension ScreenID: View, ScreenMacros.Screens {
 }
 ```
 
-これにより、`ScreenID` をそのまま SwiftUI の `View` として利用できます。
+これにより、`Screen` をそのまま SwiftUI の `View` として利用できます。
 
 ## 特徴
 
@@ -124,7 +124,7 @@ Example/
     ├── ContentView.swift             # TabView を含むメインビュー
     ├── Info.plist
     ├── Screens/
-    │   ├── ScreenID.swift            # ナビゲーション用スクリーン
+    │   ├── Screen.swift            # ナビゲーション用スクリーン
     │   ├── TabScreen.swift           # タブバー用スクリーン
     │   ├── ModalScreen.swift         # シート用スクリーン
     │   └── FullScreen.swift          # フルスクリーンカバー用スクリーン
@@ -155,7 +155,7 @@ Example/
 
 ```swift
 @Screens
-enum ScreenID {
+enum Screen {
     case gameOfLifeScreen  // → GameOfLifeScreen()
     case mosaicScreen      // → MosaicScreen()
 }
@@ -164,7 +164,7 @@ enum ScreenID {
 展開結果:
 
 ```swift
-extension ScreenID: View, ScreenMacros.Screens {
+extension Screen: View, ScreenMacros.Screens {
     @MainActor @ViewBuilder
     var body: some View {
         switch self {
@@ -212,7 +212,7 @@ case の引数ラベルと View イニシャライザの引数名が異なる場
 
 ```swift
 @Screens
-enum ScreenID {
+enum Screen {
     @Screen(ProfileView.self, ["userId": "id", "showEdit": "editable"])
     case profile(userId: Int, showEdit: Bool)
 }
@@ -221,7 +221,7 @@ enum ScreenID {
 展開結果:
 
 ```swift
-extension ScreenID: View, ScreenMacros.Screens {
+extension Screen: View, ScreenMacros.Screens {
     @MainActor @ViewBuilder
     var body: some View {
         switch self {
@@ -252,7 +252,7 @@ extension ScreenID: View, ScreenMacros.Screens {
 
 ```swift
 @Screens
-public enum ScreenID {
+public enum Screen {
     case homeScreen
 }
 ```
@@ -260,7 +260,7 @@ public enum ScreenID {
 展開結果:
 
 ```swift
-public extension ScreenID: View, ScreenMacros.Screens {
+public extension Screen: View, ScreenMacros.Screens {
     @MainActor @ViewBuilder
     public var body: some View {
         switch self {
@@ -286,7 +286,7 @@ public extension ScreenID: View, ScreenMacros.Screens {
 
 ```swift
 @Screens
-enum ScreenID {
+enum Screen {
     case optionalDetail(id: Int?)
     case loadResult(result: Result<Int, Error>)
 }
@@ -295,7 +295,7 @@ enum ScreenID {
 展開結果:
 
 ```swift
-extension ScreenID: View, ScreenMacros.Screens {
+extension Screen: View, ScreenMacros.Screens {
     @MainActor @ViewBuilder
     var body: some View {
         switch self {
@@ -320,18 +320,18 @@ extension ScreenID: View, ScreenMacros.Screens {
 
 ```swift
 @Screens
-enum ScreenID: Hashable {
+enum Screen: Hashable {
     case home
     case detail(id: Int)
 }
 
 struct ContentView: View {
-    @State private var path: [ScreenID] = []
+    @State private var path: [Screen] = []
 
     var body: some View {
         NavigationStack(path: $path) {
             HomeView()
-                .navigationDestination(ScreenID.self)
+                .navigationDestination(Screen.self)
         }
     }
 }
@@ -340,7 +340,7 @@ struct ContentView: View {
 これは以下と同等です:
 
 ```swift
-.navigationDestination(for: ScreenID.self) { screen in
+.navigationDestination(for: Screen.self) { screen in
     screen
 }
 ```

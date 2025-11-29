@@ -10,7 +10,7 @@ struct Home: View {
         List {
             Section {
                 ForEach(1...5, id: \.self) { id in
-                    NavigationLink(value: ScreenID.detail(id: id)) {
+                    NavigationLink(value: Screen.detail(id: id)) {
                         Label("Item \(id)", systemImage: "doc.fill")
                     }
                 }
@@ -19,7 +19,7 @@ struct Home: View {
             }
 
             Section {
-                NavigationLink(value: ScreenID.profile(userId: 42)) {
+                NavigationLink(value: Screen.profile(userId: 42)) {
                     Label("View Profile", systemImage: "person.circle")
                 }
             } header: {
@@ -33,6 +33,6 @@ struct Home: View {
 #Preview {
     NavigationStack {
         Home()
-            .navigationDestination(ScreenID.self)
+            .navigationDestination(Screen.self)
     }
 }
