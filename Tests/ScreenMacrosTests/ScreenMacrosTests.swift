@@ -7,7 +7,7 @@ import Testing
 #if canImport(ScreenMacrosImpl)
 import ScreenMacrosImpl
 
-private let testMacros: [String: Macro.Type] = [
+private nonisolated(unsafe) let testMacros: [String: Macro.Type] = [
     "Screens": ScreensMacro.self,
     "Screen": ScreenMacro.self,
 ]
