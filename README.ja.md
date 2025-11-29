@@ -42,6 +42,14 @@ extension ScreenID: View, ScreenMacros.Screens {
 
 これにより、`ScreenID` をそのまま SwiftUI の `View` として利用できます。
 
+## 特徴
+
+- 🎯 型安全な画面と View のマッピング
+- 🔄 View プロトコルへの自動準拠
+- 📦 associated value のサポート
+- 🗺️ パラメータマッピング
+- 🧩 SwiftUI ナビゲーションヘルパー
+
 ---
 
 ## インストール
