@@ -1,7 +1,7 @@
 # ScreenMacros
 
-[![Swift 6.0](https://img.shields.io/badge/Swift-6.0-orange.svg)](https://swift.org)
-[![Platform](https://img.shields.io/badge/Platforms-iOS%2017+%20|%20macOS%2014+-blue.svg)](https://developer.apple.com)
+[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2FKoshimizu-Takehito%2FScreenMacros%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/Koshimizu-Takehito/ScreenMacros)
+[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2FKoshimizu-Takehito%2FScreenMacros%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/Koshimizu-Takehito/ScreenMacros)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
 **ScreenMacros** is a Swift macro package that generates type-safe SwiftUI views from enums.
