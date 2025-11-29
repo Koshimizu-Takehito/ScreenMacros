@@ -44,6 +44,7 @@ You can now use `ScreenID` directly as a SwiftUI `View`.
 
 - [Requirements](#requirements)
 - [Installation](#installation)
+- [Example Project](#example-project)
 - [Macros](#macros)
 - [Parameter Mapping](#parameter-mapping)
 - [Access Control](#access-control)
@@ -87,6 +88,57 @@ Then add it to your target:
 1. File → Add Package Dependencies...
 2. Enter: `https://github.com/Koshimizu-Takehito/ScreenMacros.git`
 3. Select version: `1.0.0` or later
+
+---
+
+## Example Project
+
+A complete example iOS app is included in the `Example/` directory. It demonstrates all features of ScreenMacros:
+
+- `@Screens` macro with automatic View type inference
+- `@Screen` with explicit type and parameter mapping
+- `NavigationStack` with `navigationDestination(_:)`
+- `sheet(item:)` for modal presentation
+- `fullScreenCover(item:)` for full-screen presentation
+- `ScreensForEach` with `TabView`
+
+### Running the Example
+
+```bash
+cd Example
+open ScreenMacrosExample.xcodeproj
+```
+
+Then build and run in Xcode. The first time you build, you may need to trust the macro:
+
+1. Build the project (⌘B)
+2. When prompted about macros, click "Trust & Enable"
+
+### Project Structure
+
+```
+Example/
+├── ScreenMacrosExample.xcodeproj
+└── ScreenMacrosExample/
+    ├── ScreenMacrosExampleApp.swift  # App entry point
+    ├── ContentView.swift             # Main view with TabView
+    ├── Info.plist
+    ├── Screens/
+    │   ├── ScreenID.swift            # Navigation screens
+    │   ├── TabScreen.swift           # Tab bar screens
+    │   ├── ModalScreen.swift         # Sheet screens
+    │   └── FullScreen.swift          # Full-screen cover screens
+    └── Views/
+        ├── Home.swift                # Home screen
+        ├── Detail.swift              # Detail screen
+        ├── Search.swift              # Search screen
+        ├── Profile.swift             # Profile tab screen
+        ├── ProfileView.swift         # Profile screen (parameter mapping)
+        ├── Settings.swift            # Settings modal
+        ├── EditProfile.swift         # Edit profile modal
+        ├── Onboarding.swift          # Onboarding full-screen
+        └── Login.swift               # Login full-screen
+```
 
 ---
 

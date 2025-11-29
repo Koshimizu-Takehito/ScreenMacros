@@ -44,6 +44,7 @@ extension ScreenID: View, ScreenMacros.Screens {
 
 - [動作環境](#動作環境)
 - [インストール](#インストール)
+- [サンプルプロジェクト](#サンプルプロジェクト)
 - [マクロ](#マクロ)
 - [パラメータマッピング](#パラメータマッピング)
 - [アクセスレベル](#アクセスレベル)
@@ -87,6 +88,57 @@ dependencies: [
 1. File → Add Package Dependencies...
 2. URL を入力: `https://github.com/Koshimizu-Takehito/ScreenMacros.git`
 3. バージョンを選択: `1.0.0` 以降
+
+---
+
+## サンプルプロジェクト
+
+`Example/` ディレクトリに完全なサンプル iOS アプリが含まれています。ScreenMacros のすべての機能をデモンストレーションしています:
+
+- `@Screens` マクロによる自動 View 型推論
+- `@Screen` による明示的な型指定とパラメータマッピング
+- `NavigationStack` と `navigationDestination(_:)`
+- `sheet(item:)` によるモーダル表示
+- `fullScreenCover(item:)` によるフルスクリーン表示
+- `ScreensForEach` と `TabView`
+
+### サンプルの実行方法
+
+```bash
+cd Example
+open ScreenMacrosExample.xcodeproj
+```
+
+Xcode でビルドして実行します。初回ビルド時はマクロを信頼する必要があります:
+
+1. プロジェクトをビルド (⌘B)
+2. マクロについてのプロンプトが表示されたら「Trust & Enable」をクリック
+
+### プロジェクト構成
+
+```
+Example/
+├── ScreenMacrosExample.xcodeproj
+└── ScreenMacrosExample/
+    ├── ScreenMacrosExampleApp.swift  # アプリのエントリーポイント
+    ├── ContentView.swift             # TabView を含むメインビュー
+    ├── Info.plist
+    ├── Screens/
+    │   ├── ScreenID.swift            # ナビゲーション用スクリーン
+    │   ├── TabScreen.swift           # タブバー用スクリーン
+    │   ├── ModalScreen.swift         # シート用スクリーン
+    │   └── FullScreen.swift          # フルスクリーンカバー用スクリーン
+    └── Views/
+        ├── Home.swift                # ホーム画面
+        ├── Detail.swift              # 詳細画面
+        ├── Search.swift              # 検索画面
+        ├── Profile.swift             # プロフィールタブ画面
+        ├── ProfileView.swift         # プロフィール画面（パラメータマッピング）
+        ├── Settings.swift            # 設定モーダル
+        ├── EditProfile.swift         # プロフィール編集モーダル
+        ├── Onboarding.swift          # オンボーディングフルスクリーン
+        └── Login.swift               # ログインフルスクリーン
+```
 
 ---
 
