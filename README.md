@@ -4,43 +4,17 @@
 [![Platform](https://img.shields.io/badge/Platforms-iOS%2017+%20|%20macOS%2014+-blue.svg)](https://developer.apple.com)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-**ScreenMacros** is a Swift macro package that turns an enum of screen identifiers
-into type-safe SwiftUI views.
-
-You annotate an enum with `@Screens` and optionally each case with `@Screen`,
-and the macro generates `View` and `Screens` conformances that switch over all cases.
+**ScreenMacros** is a Swift macro package that generates type-safe SwiftUI views from enums.
 
 ```swift
-import SwiftUI
-import ScreenMacros
-
 @Screens
 enum ScreenID {
-    case homeScreen
-    case detailScreen(id: Int?)
-    case loadResult(result: Result<Int, Error>)
+    case home
+    case detail(id: Int)
 }
 ```
 
-After macro expansion:
-
-```swift
-extension ScreenID: View, ScreenMacros.Screens {
-    @MainActor @ViewBuilder
-    var body: some View {
-        switch self {
-        case .homeScreen:
-            HomeScreen()
-        case .detailScreen(id: let id):
-            DetailScreen(id: id)
-        case .loadResult(result: let result):
-            LoadResult(result: result)
-        }
-    }
-}
-```
-
-You can now use `ScreenID` directly as a SwiftUI `View`.
+With just `@Screens`, each case becomes a `View` that instantiates the corresponding screen (e.g., `home` → `Home()`, `detail(id:)` → `Detail(id: id)`).
 
 ## Features
 
@@ -49,6 +23,23 @@ You can now use `ScreenID` directly as a SwiftUI `View`.
 - 📦 Associated values support
 - 🗺️ Parameter mapping
 - 🧩 SwiftUI navigation helpers
+
+## Table of Contents
+
+- [Requirements](#requirements)
+- [Installation](#installation)
+- [Macros](#macros)
+- [Parameter Mapping](#parameter-mapping)
+- [Access Control](#access-control)
+- [Associated Values](#associated-values)
+- [Navigation Helpers](#navigation-helpers)
+- [ForEach Helpers](#foreach-helpers)
+- [License](#license)
+
+## Requirements
+
+- Swift 6.0+
+- iOS 17.0+ / macOS 14.0+ / tvOS 17.0+ / watchOS 10.0+ / visionOS 1.0+
 
 ---
 
@@ -64,7 +55,7 @@ dependencies: [
 ]
 ```
 
-And add it to your target:
+Then add it to your target:
 
 ```swift
 .target(
@@ -87,13 +78,12 @@ And add it to your target:
 
 ### `@Screens`
 
-- **Attached to**: enum  
+- **Attached to**: enum
 - **Generates**:
   - `extension <Enum>: View, Screens`
   - `var body: some View`
 
-If no `@Screen` attributes are present, types are inferred from case names by
-converting them to UpperCamelCase:
+If no `@Screen` attributes are present, View types are inferred from case names by converting them to UpperCamelCase:
 
 ```swift
 @Screens
@@ -103,35 +93,92 @@ enum ScreenID {
 }
 ```
 
-### `@Screen`
-
-- **Attached to**: enum case  
-- **Purpose**: Override the inferred view type and/or map parameter labels.
+Expands to:
 
 ```swift
-@Screens
-enum ScreenID {
-    @Screen(CustomView.self)
-    case customScreen
-
-    @Screen(DetailView.self, ["id": "detailId"])
-    case detail(id: Int)
-
-    @Screen(["foo": "image"])
-    case multiColorImage(foo: Image, colors: [Color])
+extension ScreenID: View, ScreenMacros.Screens {
+    @MainActor @ViewBuilder
+    var body: some View {
+        switch self {
+        case .gameOfLifeScreen:
+            GameOfLifeScreen()
+        case .mosaicScreen:
+            MosaicScreen()
+        }
+    }
 }
+```
+
+### `@Screen`
+
+- **Attached to**: enum case
+- **Purpose**: Override the inferred View type and/or map parameter labels.
+
+#### Specify View type
+
+```swift
+@Screen(CustomView.self)
+case customScreen  // → CustomView()
+```
+
+#### Specify View type with parameter mapping
+
+```swift
+@Screen(DetailView.self, ["id": "detailId"])
+case detail(id: Int)  // → DetailView(detailId: id)
+```
+
+#### Parameter mapping only (View type inferred)
+
+```swift
+@Screen(["foo": "image"])
+case multiColorImage(foo: Image, colors: [Color])
+// → MultiColorImage(image: foo, colors: colors)
 ```
 
 ---
 
-## Access Control Auto-Adjustment
+## Parameter Mapping
 
-**ScreenMacros automatically mirrors the access level of the source enum.**
+When case labels differ from View initializer parameter names, provide a mapping via `@Screen`:
 
-- **Access level mapping**
-  - `public enum` → `public extension` / `public var body`
-  - `internal enum` (including no modifier) → `internal extension` / `internal var body`
-  - `fileprivate` / `private` enums → `fileprivate extension` / `fileprivate var body`, `private extension` / `private var body` respectively.
+```swift
+@Screens
+enum ScreenID {
+    @Screen(ProfileView.self, ["userId": "id", "showEdit": "editable"])
+    case profile(userId: Int, showEdit: Bool)
+}
+```
+
+Expands to:
+
+```swift
+extension ScreenID: View, ScreenMacros.Screens {
+    @MainActor @ViewBuilder
+    var body: some View {
+        switch self {
+        case .profile(userId: let userId, showEdit: let showEdit):
+            ProfileView(id: userId, editable: showEdit)
+        }
+    }
+}
+```
+
+- Mapping keys must match case parameter labels.
+- Unmapped parameters are passed through unchanged.
+
+---
+
+## Access Control
+
+`@Screens` automatically mirrors the access level of the source enum:
+
+| Source | Generated |
+|--------|-----------|
+| `public enum` | `public extension` / `public var body` |
+| `internal enum` | `internal extension` / `internal var body` |
+| `fileprivate enum` | `fileprivate extension` / `fileprivate var body` |
+| `private enum` | `private extension` / `private var body` |
 
 Example:
 
@@ -142,13 +189,9 @@ public enum ScreenID {
 }
 ```
 
-expands to:
+Expands to:
 
 ```swift
-public enum ScreenID {
-    case homeScreen
-}
-
 public extension ScreenID: View, ScreenMacros.Screens {
     @MainActor @ViewBuilder
     public var body: some View {
@@ -160,20 +203,18 @@ public extension ScreenID: View, ScreenMacros.Screens {
 }
 ```
 
-This prevents accidental mismatches such as an `internal enum` with a `public body`,
-and makes it safe to expose `public` APIs from libraries.
+This prevents mismatches like an `internal enum` with a `public body`.
 
 ---
 
-## Associated Values with Optional / Result
+## Associated Values
 
-`@Screens` does **not depend on the concrete types** of associated values.
-It simply:
+`@Screens` does not depend on concrete types of associated values. It simply:
 
-- Binds each case parameter to a local `let` binding
-- Forwards those bindings to the inferred or specified View initializer
+1. Binds each case parameter to a local `let`
+2. Forwards those bindings to the View initializer
 
-This means cases with `Optional` or `Result` work out of the box:
+This means `Optional`, `Result`, and other generic types work out of the box:
 
 ```swift
 @Screens
@@ -183,7 +224,7 @@ enum ScreenID {
 }
 ```
 
-The macro expands to:
+Expands to:
 
 ```swift
 extension ScreenID: View, ScreenMacros.Screens {
@@ -199,47 +240,11 @@ extension ScreenID: View, ScreenMacros.Screens {
 }
 ```
 
-The same rule applies to other complex generic types (e.g. `[String]`, `Result<[User], Error>`, etc.),
-so you can freely use them in your screen enums.
-
----
-
-## Parameter Mapping
-
-When the case labels and the View initializer parameter names differ,
-you can provide a mapping via `@Screen`:
-
-```swift
-@Screens
-enum ScreenID {
-    @Screen(ProfileView.self, ["userId": "id", "showEdit": "editable"])
-    case profile(userId: Int, showEdit: Bool)
-}
-```
-
-expands to:
-
-```swift
-extension ScreenID: View, ScreenMacros.Screens {
-    @MainActor @ViewBuilder
-    var body: some View {
-        switch self {
-        case .profile(userId: let userId, showEdit: let showEdit):
-            ProfileView(id: userId, editable: showEdit)
-        }
-    }
-}
-```
-
-Keys in the mapping must match the case parameter labels.
-Unmapped parameters are passed through unchanged.
-
 ---
 
 ## Navigation Helpers
 
-Enums annotated with `@Screens` automatically conform to the `Screens` protocol,
-which enables convenient navigation helpers.
+Enums annotated with `@Screens` automatically conform to the `Screens` protocol. This protocol provides View extensions for streamlined SwiftUI navigation.
 
 ### NavigationStack
 
@@ -264,7 +269,7 @@ struct ContentView: View {
 }
 ```
 
-This is equivalent to the more verbose:
+This is equivalent to:
 
 ```swift
 .navigationDestination(for: ScreenID.self) { screen in
@@ -360,4 +365,8 @@ VStack {
 }
 ```
 
+---
 
+## License
+
+ScreenMacros is available under the MIT License. See the [LICENSE](LICENSE) file for details.

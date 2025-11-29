@@ -4,51 +4,42 @@
 [![Platform](https://img.shields.io/badge/Platforms-iOS%2017+%20|%20macOS%2014+-blue.svg)](https://developer.apple.com)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-**ScreenMacros** は、画面を表す `enum` から型安全な SwiftUI `View` を自動生成する
-Swift マクロパッケージです。
-
-`enum` に `@Screens` を付け、必要に応じて各 case に `@Screen` を付けることで、
-その `enum` 自体を SwiftUI の `View` として扱えるようになります。
+**ScreenMacros** は、enum から型安全な SwiftUI View を自動生成する Swift マクロパッケージです。
 
 ```swift
-import SwiftUI
-import ScreenMacros
-
 @Screens
 enum ScreenID {
-    case homeScreen
-    case detailScreen(id: Int?)
-    case loadResult(result: Result<Int, Error>)
+    case home
+    case detail(id: Int)
 }
 ```
 
-マクロ展開後は次のようなコードが生成されます（View 名は case 名から推論されます）:
-
-```swift
-extension ScreenID: View, ScreenMacros.Screens {
-    @MainActor @ViewBuilder
-    var body: some View {
-        switch self {
-        case .homeScreen:
-            HomeScreen()
-        case .detailScreen(id: let id):
-            DetailScreen(id: id)
-        case .loadResult(result: let result):
-            LoadResult(result: result)
-        }
-    }
-}
-```
-
-これにより、`ScreenID` をそのまま SwiftUI の `View` として利用できます。
+`@Screens` を付けるだけで、各 case が対応する画面を生成する `View` になります（例: `home` → `Home()`、`detail(id:)` → `Detail(id: id)`）。
 
 ## 特徴
 
 - 🎯 型安全な画面と View のマッピング
 - 🔄 View プロトコルへの自動準拠
-- 📦 associated value のサポート
+- 📦 Associated values のサポート
 - 🗺️ パラメータマッピング
 - 🧩 SwiftUI ナビゲーションヘルパー
+
+## 目次
+
+- [動作環境](#動作環境)
+- [インストール](#インストール)
+- [マクロ](#マクロ)
+- [パラメータマッピング](#パラメータマッピング)
+- [アクセスレベル](#アクセスレベル)
+- [Associated Values](#associated-values)
+- [ナビゲーションヘルパー](#ナビゲーションヘルパー)
+- [ForEach ヘルパー](#foreach-ヘルパー)
+- [ライセンス](#ライセンス)
+
+## 動作環境
+
+- Swift 6.0+
+- iOS 17.0+ / macOS 14.0+ / tvOS 17.0+ / watchOS 10.0+ / visionOS 1.0+
 
 ---
 
@@ -56,7 +47,7 @@ extension ScreenID: View, ScreenMacros.Screens {
 
 ### Swift Package Manager
 
-`Package.swift` に **ScreenMacros** を追加します。
+`Package.swift` に **ScreenMacros** を追加します:
 
 ```swift
 dependencies: [
@@ -64,7 +55,7 @@ dependencies: [
 ]
 ```
 
-利用するターゲットで依存を追加します。
+ターゲットに依存を追加します:
 
 ```swift
 .target(
@@ -83,17 +74,16 @@ dependencies: [
 
 ---
 
-## マクロ一覧
+## マクロ
 
 ### `@Screens`
 
-- **付与先**: `enum`  
+- **付与先**: enum
 - **生成内容**:
   - `extension <Enum>: View, Screens`
   - `var body: some View`
 
-`@Screen` が付いていない場合でも、case 名を UpperCamelCase に変換して
-View 型を推論します。
+`@Screen` が付いていない場合、case 名を UpperCamelCase に変換して View 型を推論します:
 
 ```swift
 @Screens
@@ -103,35 +93,92 @@ enum ScreenID {
 }
 ```
 
-### `@Screen`
-
-- **付与先**: `enum case`  
-- **用途**: 推論される View 型を上書きしたり、引数ラベルをマッピングしたりする
+展開結果:
 
 ```swift
-@Screens
-enum ScreenID {
-    @Screen(CustomView.self)
-    case customScreen
-
-    @Screen(DetailView.self, ["id": "detailId"])
-    case detail(id: Int)
-
-    @Screen(["foo": "image"])
-    case multiColorImage(foo: Image, colors: [Color])
+extension ScreenID: View, ScreenMacros.Screens {
+    @MainActor @ViewBuilder
+    var body: some View {
+        switch self {
+        case .gameOfLifeScreen:
+            GameOfLifeScreen()
+        case .mosaicScreen:
+            MosaicScreen()
+        }
+    }
 }
+```
+
+### `@Screen`
+
+- **付与先**: enum case
+- **用途**: 推論される View 型を上書き、または引数ラベルをマッピング
+
+#### View 型を指定
+
+```swift
+@Screen(CustomView.self)
+case customScreen  // → CustomView()
+```
+
+#### View 型とパラメータマッピングを指定
+
+```swift
+@Screen(DetailView.self, ["id": "detailId"])
+case detail(id: Int)  // → DetailView(detailId: id)
+```
+
+#### パラメータマッピングのみ（View 型は推論）
+
+```swift
+@Screen(["foo": "image"])
+case multiColorImage(foo: Image, colors: [Color])
+// → MultiColorImage(image: foo, colors: colors)
 ```
 
 ---
 
-## アクセスレベルの自動調整
+## パラメータマッピング
 
-**`@Screens` は、元の `enum` のアクセスレベルを自動的に引き継ぎます。**
+case の引数ラベルと View イニシャライザの引数名が異なる場合、`@Screen` でマッピングを指定します:
 
-- **アクセスレベルの対応**
-  - `public enum` → `public extension` / `public var body`
-  - `internal enum`（修飾子なしを含む）→ `internal extension` / `internal var body`
-  - `fileprivate` / `private` も同様に、`fileprivate extension` / `fileprivate var body`、`private extension` / `private var body` として反映
+```swift
+@Screens
+enum ScreenID {
+    @Screen(ProfileView.self, ["userId": "id", "showEdit": "editable"])
+    case profile(userId: Int, showEdit: Bool)
+}
+```
+
+展開結果:
+
+```swift
+extension ScreenID: View, ScreenMacros.Screens {
+    @MainActor @ViewBuilder
+    var body: some View {
+        switch self {
+        case .profile(userId: let userId, showEdit: let showEdit):
+            ProfileView(id: userId, editable: showEdit)
+        }
+    }
+}
+```
+
+- マッピングのキーは case の引数ラベルと一致する必要があります。
+- マッピングに含まれない引数は、そのままのラベル名で渡されます。
+
+---
+
+## アクセスレベル
+
+`@Screens` は元の enum のアクセスレベルを自動的に引き継ぎます:
+
+| 元の enum | 生成されるコード |
+|-----------|------------------|
+| `public enum` | `public extension` / `public var body` |
+| `internal enum` | `internal extension` / `internal var body` |
+| `fileprivate enum` | `fileprivate extension` / `fileprivate var body` |
+| `private enum` | `private extension` / `private var body` |
 
 例:
 
@@ -142,13 +189,9 @@ public enum ScreenID {
 }
 ```
 
-展開後:
+展開結果:
 
 ```swift
-public enum ScreenID {
-    case homeScreen
-}
-
 public extension ScreenID: View, ScreenMacros.Screens {
     @MainActor @ViewBuilder
     public var body: some View {
@@ -160,26 +203,18 @@ public extension ScreenID: View, ScreenMacros.Screens {
 }
 ```
 
-これにより、
-
-- `internal enum` に `public var body` が生成されてしまう
-- `public enum` なのに extension 側が internal のまま
-
-といったアクセスレベルの不整合を防ぎ、ライブラリとして `public` API を
-安全に公開できます。
+これにより、`internal enum` に `public body` が生成されるような不整合を防ぎます。
 
 ---
 
-## Optional / Result を含む associated value のサポート
+## Associated Values
 
-`@Screens` は、associated value の**具体的な型には依存せず**、
+`@Screens` は associated values の具体的な型に依存しません。単純に:
 
-- case の引数ラベルを `let` で束縛し
-- その束縛値を View イニシャライザにそのまま渡す
+1. 各 case パラメータを `let` で束縛
+2. その束縛値を View イニシャライザに転送
 
-という単純なルールで動作します。
-
-そのため、`Optional` や `Result` を含むケースもそのまま扱えます。
+そのため、`Optional`、`Result`、その他のジェネリック型もそのまま動作します:
 
 ```swift
 @Screens
@@ -205,51 +240,15 @@ extension ScreenID: View, ScreenMacros.Screens {
 }
 ```
 
-`Optional` / `Result` 以外の複雑なジェネリック型（`[String]` や `Result<[User], Error>` など）でも、
-同じルールでそのまま引き回されるため、画面用の `enum` で自由に利用できます。
-
----
-
-## パラメータマッピング
-
-case の引数ラベルと View のイニシャライザの引数名が異なる場合は、
-`@Screen` の第 2 引数としてマッピングを渡します。
-
-```swift
-@Screens
-enum ScreenID {
-    @Screen(ProfileView.self, ["userId": "id", "showEdit": "editable"])
-    case profile(userId: Int, showEdit: Bool)
-}
-```
-
-展開結果:
-
-```swift
-extension ScreenID: View, ScreenMacros.Screens {
-    @MainActor @ViewBuilder
-    var body: some View {
-        switch self {
-        case .profile(userId: let userId, showEdit: let showEdit):
-            ProfileView(id: userId, editable: showEdit)
-        }
-    }
-}
-```
-
-- マッピングのキーは **case の引数ラベル** と一致している必要があります。
-- マッピングに含まれない引数は、そのままのラベル名で View に渡されます。
-
 ---
 
 ## ナビゲーションヘルパー
 
-`@Screens` を付与した enum は自動的に `Screens` プロトコルに準拠し、
-便利なナビゲーションヘルパーが使用できるようになります。
+`@Screens` を付与した enum は自動的に `Screens` プロトコルに準拠します。このプロトコルは SwiftUI ナビゲーションを簡潔にする View 拡張を提供します。
 
 ### NavigationStack
 
-`navigationDestination(_:)` でナビゲーション先を登録できます:
+`navigationDestination(_:)` でナビゲーション先を登録:
 
 ```swift
 @Screens
@@ -270,7 +269,7 @@ struct ContentView: View {
 }
 ```
 
-これは以下の冗長なコードと同等です:
+これは以下と同等です:
 
 ```swift
 .navigationDestination(for: ScreenID.self) { screen in
@@ -280,7 +279,7 @@ struct ContentView: View {
 
 ### Sheet
 
-`sheet(item:)` でシートを表示できます:
+`sheet(item:)` でシートを表示:
 
 ```swift
 @Screens
@@ -295,7 +294,7 @@ struct ContentView: View {
     @State private var presentedScreen: ModalScreen?
 
     var body: some View {
-        Button("設定を表示") {
+        Button("Show Settings") {
             presentedScreen = .settings
         }
         .sheet(item: $presentedScreen)
@@ -305,7 +304,7 @@ struct ContentView: View {
 
 ### FullScreenCover (iOS / tvOS / watchOS / visionOS)
 
-`fullScreenCover(item:)` でフルスクリーン表示ができます:
+`fullScreenCover(item:)` でフルスクリーン表示:
 
 ```swift
 @Screens
@@ -320,7 +319,7 @@ struct ContentView: View {
     @State private var fullScreen: FullScreen?
 
     var body: some View {
-        Button("オンボーディングを開始") {
+        Button("Start Onboarding") {
             fullScreen = .onboarding
         }
         .fullScreenCover(item: $fullScreen)
@@ -334,7 +333,7 @@ struct ContentView: View {
 
 ### ScreensForEach
 
-`CaseIterable` な enum の全ケースをカスタムコンテンツで反復処理します:
+`CaseIterable` な enum の全ケースをカスタムコンテンツで反復処理:
 
 ```swift
 @Screens
@@ -358,7 +357,7 @@ TabView {
 
 ### ScreensForEachView
 
-全ケースを直接 View としてレンダリングします:
+全ケースを直接 View としてレンダリング:
 
 ```swift
 VStack {
@@ -366,4 +365,8 @@ VStack {
 }
 ```
 
+---
 
+## ライセンス
+
+ScreenMacros は MIT ライセンスで提供されています。詳細は [LICENSE](LICENSE) ファイルを参照してください。
