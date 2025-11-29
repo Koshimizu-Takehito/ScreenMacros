@@ -1,6 +1,6 @@
 import SwiftUI
 
-// MARK: - ScreenMacrosExampleApp
+// MARK: - App
 
 /// Main entry point for the ScreenMacros example application.
 ///
@@ -10,11 +10,10 @@ import SwiftUI
 /// - Navigation helpers (navigationDestination, sheet, fullScreenCover)
 /// - ForEach helpers (ScreensForEach, ScreensForEachView)
 @main
-struct ScreenMacrosExampleApp: App {
+struct App: SwiftUI.App {
     var body: some Scene {
         WindowGroup {
             ContentView()
         }
     }
 }
-

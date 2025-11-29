@@ -36,4 +36,3 @@ struct Home: View {
             .navigationDestination(ScreenID.self)
     }
 }
-

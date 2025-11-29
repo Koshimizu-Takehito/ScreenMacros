@@ -37,4 +37,3 @@ struct Detail: View {
         Detail(id: 42)
     }
 }
-

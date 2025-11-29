@@ -26,4 +26,3 @@ enum ModalScreen: Hashable, Identifiable {
 
     var id: Self { self }
 }
-

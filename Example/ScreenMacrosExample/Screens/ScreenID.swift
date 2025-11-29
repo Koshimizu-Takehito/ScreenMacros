@@ -34,4 +34,3 @@ enum ScreenID: Hashable {
     @Screen(ProfileView.self, ["userId": "id"])
     case profile(userId: Int)
 }
-

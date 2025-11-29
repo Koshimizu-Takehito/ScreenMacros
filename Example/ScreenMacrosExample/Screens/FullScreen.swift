@@ -28,4 +28,3 @@ enum FullScreen: Hashable, Identifiable {
 
     var id: Self { self }
 }
-

@@ -43,4 +43,3 @@ struct Search: View {
             .navigationDestination(ScreenID.self)
     }
 }
-

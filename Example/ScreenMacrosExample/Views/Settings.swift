@@ -86,4 +86,3 @@ private struct AboutView: View {
 #Preview {
     Settings()
 }
-

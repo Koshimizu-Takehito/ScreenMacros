@@ -68,4 +68,3 @@ struct Profile: View {
         Profile()
     }
 }
-
