@@ -213,7 +213,7 @@ When case labels differ from View initializer parameter names, provide a mapping
 
 ```swift
 @Screens
-enum Screen: Hashable {
+enum Screen {
     @Screen(ProfileView.self, ["userId": "id"])
     case profile(userId: Int)
 }
@@ -292,7 +292,7 @@ This means `Optional`, `Result`, and other generic types work out of the box:
 
 ```swift
 @Screens
-enum Screen: Hashable {
+enum Screen {
     case detail(id: Int?)
     case loadResult(result: Result<String, Error>)
 }
@@ -320,7 +320,7 @@ When an associated value has no label, it is passed to the View **without a labe
 
 ```swift
 @Screens
-enum Screen: Hashable {
+enum Screen {
     case preview(Int)                      // Unlabeled
     case article(Int, title: String)       // Mixed: unlabeled + labeled
 }
