@@ -504,6 +504,7 @@ make setup
 | Command | Description |
 |---------|-------------|
 | `make setup` | Install Mint (if needed) and dependencies via Mint |
+| `make sync` | Pull latest changes and update all dependencies |
 | `make build` | Build the package |
 | `make test` | Run tests |
 | `make lint` | Run SwiftLint |
