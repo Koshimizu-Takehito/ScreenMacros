@@ -121,7 +121,7 @@ Then build and run in Xcode. The first time you build, you may need to trust the
 Example/
 ├── ScreenMacrosExample.xcodeproj
 └── ScreenMacrosExample/
-    ├── ScreenMacrosExampleApp.swift  # App entry point
+    ├── App.swift                      # App entry point
     ├── ContentView.swift             # Main view with TabView
     ├── Info.plist
     ├── Screens/
