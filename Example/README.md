@@ -8,7 +8,7 @@ This is a sample iOS application demonstrating the features of [ScreenMacros](ht
 
 | Enum | Purpose | Features |
 |------|---------|----------|
-| `ScreenID` | Navigation screens | Automatic type inference, parameter mapping |
+| `Screen` | Navigation screens | Automatic type inference, unlabeled parameters, parameter mapping |
 | `TabScreen` | Tab bar screens | `CaseIterable`, `ScreensForEach` |
 | `ModalScreen` | Sheet presentations | `Identifiable`, `sheet(item:)` |
 | `FullScreen` | Full-screen covers | `fullScreenCover(item:)` |
@@ -46,13 +46,14 @@ ScreenMacrosExample/
 ├── ContentView.swift             # Root view with TabView
 ├── Info.plist                    # App configuration
 ├── Screens/
-│   ├── ScreenID.swift            # @Screens enum for navigation
+│   ├── Screen.swift              # @Screens enum for navigation
 │   ├── TabScreen.swift           # @Screens enum for tabs
 │   ├── ModalScreen.swift         # @Screens enum for sheets
 │   └── FullScreen.swift          # @Screens enum for full-screen covers
 └── Views/
     ├── Home.swift                # Home screen with navigation links
     ├── Detail.swift              # Detail screen (receives id parameter)
+    ├── Preview.swift             # Preview screen (unlabeled parameter demo)
     ├── Search.swift              # Search screen with searchable
     ├── Profile.swift             # Profile tab screen
     ├── ProfileView.swift         # Profile view (parameter mapping demo)
@@ -68,9 +69,18 @@ ScreenMacrosExample/
 
 ```swift
 @Screens
-enum ScreenID: Hashable {
-    case home           // → Home()
+enum Screen: Hashable {
+    case home            // → Home()
     case detail(id: Int) // → Detail(id: id)
+}
+```
+
+### Unlabeled Associated Values
+
+```swift
+@Screens
+enum Screen: Hashable {
+    case preview(Int)    // → Preview(param0) - passed without label
 }
 ```
 
@@ -78,7 +88,7 @@ enum ScreenID: Hashable {
 
 ```swift
 @Screens
-enum ScreenID: Hashable {
+enum Screen: Hashable {
     @Screen(ProfileView.self, ["userId": "id"])
     case profile(userId: Int)  // → ProfileView(id: userId)
 }
@@ -89,7 +99,7 @@ enum ScreenID: Hashable {
 ```swift
 NavigationStack(path: $path) {
     HomeView()
-        .navigationDestination(ScreenID.self)
+        .navigationDestination(Screen.self)
 }
 .sheet(item: $presentedModal)
 .fullScreenCover(item: $presentedFullScreen)

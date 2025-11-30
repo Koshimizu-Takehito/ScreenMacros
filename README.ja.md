@@ -234,6 +234,8 @@ extension Screen: View, ScreenMacros.Screens {
 ```
 
 - マッピングのキーは case の引数ラベルと一致する必要があります。
+- ラベルなしの associated value については、自動生成されるパラメータ名（`param0`, `param1`, ...）をキーとして利用します。
+- マッピングの値に `"_"` を指定すると、そのパラメータはイニシャライザ呼び出し時にラベルなしで渡されます。
 - マッピングに含まれない引数は、そのままのラベル名で渡されます。
 
 ---
@@ -307,6 +309,48 @@ extension Screen: View, ScreenMacros.Screens {
         }
     }
 }
+```
+
+### ラベルなし Associated Values
+
+ラベルなしの associated value は、View に対して**ラベルなし**で渡されます。これにより、`init(_ id: Int)` のようなラベルなしイニシャライザを持つ View とシームレスに連携できます:
+
+```swift
+@Screens
+enum Screen {
+    case preview(Int)                    // ラベルなし
+    case mixed(Int, name: String)        // 混合: ラベルなし + ラベルあり
+}
+```
+
+展開結果:
+
+```swift
+extension Screen: View, ScreenMacros.Screens {
+    @MainActor @ViewBuilder
+    var body: some View {
+        switch self {
+        case .preview(let param0):
+            Preview(param0)              // ラベルなしで渡される
+        case .mixed(let param0, name: let name):
+            Mixed(param0, name: name)    // 1つ目はラベルなし、2つ目はラベルあり
+        }
+    }
+}
+```
+
+ラベルなしパラメータにラベルを追加したい場合は、マッピングを使用します:
+
+```swift
+@Screen(["param0": "id"])
+case preview(Int)  // → Preview(id: param0)
+```
+
+ラベル付きパラメータからラベルを外したい場合は、マッピングの値に `"_"` を指定します:
+
+```swift
+@Screen(DetailView.self, ["id": "_"])
+case detail(id: Int)  // → DetailView(id)
 ```
 
 ---

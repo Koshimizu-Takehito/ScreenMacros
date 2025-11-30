@@ -21,6 +21,19 @@ import SwiftUI
 /// }
 /// ```
 ///
+/// ## Unlabeled Associated Values
+///
+/// When an associated value has no label, it is passed to the View without a label.
+/// This allows Views with unlabeled initializer parameters to work seamlessly.
+///
+/// ```swift
+/// @Screens
+/// enum ScreenID: Hashable {
+///     case detail(Int)         // → Detail(param0) - passed without label
+///     case mixed(Int, name: String)  // → Mixed(param0, name: name)
+/// }
+/// ```
+///
 /// ## After macro expansion
 ///
 /// ```swift
@@ -107,6 +120,8 @@ public macro Screens() = #externalMacro(
 /// Specify a mapping from case parameter names to View initializer parameter names.
 /// - Keys must be string literals matching the case's parameter labels
 ///   (e.g. `id`, `userId`). Unused keys are ignored.
+/// - For unlabeled associated values, use the generated parameter names (`param0`, `param1`, ...) as keys.
+/// - A mapping value of `"_"` means "call the initializer without a label" for that parameter.
 ///
 /// ```swift
 /// @Screen(DetailView.self, ["id": "detailId"])
