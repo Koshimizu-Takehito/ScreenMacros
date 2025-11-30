@@ -89,7 +89,7 @@ private struct CaseInfo {
 
         let args = parameters.map { param -> String in
             // For unlabeled parameters, pass without label by default
-            if param.label == nil {
+            guard let sourceLabel = param.label else {
                 // Check if there's a mapping to add a label
                 if let mappedLabel = parameterMapping[param.name], mappedLabel != "_" {
                     return "\(mappedLabel): \(param.name)"
@@ -99,7 +99,6 @@ private struct CaseInfo {
             }
 
             // For labeled parameters, use mapping or original label
-            let sourceLabel = param.label!
             let targetLabel = parameterMapping[sourceLabel] ?? sourceLabel
 
             // "_" means pass without label
