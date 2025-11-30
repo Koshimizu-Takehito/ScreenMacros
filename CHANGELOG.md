@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.3] - 2025-11-30
+
+### Added
+
+- CI/CD workflow with GitHub Actions (build, test, lint, format check)
+- SwiftLint and SwiftFormat integration via Mint
+- Makefile for local development commands
+- DocC documentation catalog for Swift Package Index hosting
+- `.spi.yml` configuration for Swift Package Index documentation
+
+### Changed
+
+- Updated CI environment to macOS 15 with Xcode 16.1
+
 ## [1.0.2] - 2025-11-29
 
 ### Added
@@ -48,8 +62,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Swift 6.0+
 - iOS 17.0+ / macOS 14.0+
 
-[Unreleased]: https://github.com/Koshimizu-Takehito/ScreenMacros/compare/v1.0.2...HEAD
+[Unreleased]: https://github.com/Koshimizu-Takehito/ScreenMacros/compare/v1.0.3...HEAD
+[1.0.3]: https://github.com/Koshimizu-Takehito/ScreenMacros/compare/v1.0.2...v1.0.3
 [1.0.2]: https://github.com/Koshimizu-Takehito/ScreenMacros/compare/v1.0.1...v1.0.2
 [1.0.1]: https://github.com/Koshimizu-Takehito/ScreenMacros/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/Koshimizu-Takehito/ScreenMacros/releases/tag/v1.0.0
-
