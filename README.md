@@ -443,7 +443,7 @@ VStack {
 
 - macOS 14.0+
 - Xcode 16.0+
-- [Mint](https://github.com/yonaskolb/Mint) (installed automatically via `make setup`)
+- [Mint](https://github.com/yonaskolb/Mint) (installed automatically via `make setup` when Homebrew is available)
 
 ### Setup
 
@@ -460,7 +460,7 @@ make setup
 
 | Command | Description |
 |---------|-------------|
-| `make setup` | Install Mint and dependencies |
+| `make setup` | Install Mint (if needed) and dependencies via Mint |
 | `make build` | Build the package |
 | `make test` | Run tests |
 | `make lint` | Run SwiftLint |

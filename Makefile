@@ -7,9 +7,18 @@
 # Setup
 # ============================================================================
 
-setup: ## Install dependencies (Mint and packages)
-	@echo "📦 Installing Mint..."
-	@which mint > /dev/null || brew install mint
+setup: ## Install Mint (if needed) and dependencies via Mint
+	@echo "📦 Checking Mint installation..."
+	@if ! command -v mint >/dev/null 2>&1; then \
+		if command -v brew >/dev/null 2>&1; then \
+			echo "🍺 Mint not found. Installing via Homebrew..."; \
+			brew install mint; \
+		else \
+			echo "❌ Mint is not installed and Homebrew is not available."; \
+			echo "   Please install Mint manually: https://github.com/yonaskolb/Mint"; \
+			exit 1; \
+		fi; \
+	fi
 	@echo "📦 Installing packages from Mintfile..."
 	@mint bootstrap
 	@echo "✅ Setup complete!"
