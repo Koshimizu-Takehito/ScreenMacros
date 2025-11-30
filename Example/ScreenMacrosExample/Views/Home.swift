@@ -19,6 +19,16 @@ struct Home: View {
             }
 
             Section {
+                ForEach(1...3, id: \.self) { id in
+                    NavigationLink(value: Screen.preview(id)) {
+                        Label("Preview \(id)", systemImage: "eye.fill")
+                    }
+                }
+            } header: {
+                Text("Previews (Unlabeled Parameter)")
+            }
+
+            Section {
                 NavigationLink(value: Screen.profile(userId: 42)) {
                     Label("View Profile", systemImage: "person.circle")
                 }

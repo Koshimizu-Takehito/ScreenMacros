@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Unlabeled associated values are now passed to View initializers without labels by default
+  - `case preview(Int)` now generates `Preview(param0)` instead of `Preview(param0: param0)`
+  - This allows seamless integration with Views that have unlabeled initializer parameters (e.g., `init(_ id: Int)`)
+  - Use mapping `@Screen(["param0": "id"])` to add a label if needed
+
+### Added
+
+- Example: Added `Preview` view demonstrating unlabeled parameter handling
+- Documentation: Added "Unlabeled Associated Values" section to README and GettingStarted
+
 ## [1.0.3] - 2025-11-30
 
 ### Added

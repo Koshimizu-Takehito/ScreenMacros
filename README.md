@@ -309,6 +309,41 @@ extension Screen: View, ScreenMacros.Screens {
 }
 ```
 
+### Unlabeled Associated Values
+
+When an associated value has no label, it is passed to the View **without a label**. This allows Views with unlabeled initializer parameters (e.g., `init(_ id: Int)`) to work seamlessly:
+
+```swift
+@Screens
+enum Screen {
+    case preview(Int)                    // Unlabeled
+    case mixed(Int, name: String)        // Mixed: unlabeled + labeled
+}
+```
+
+Expands to:
+
+```swift
+extension Screen: View, ScreenMacros.Screens {
+    @MainActor @ViewBuilder
+    var body: some View {
+        switch self {
+        case .preview(let param0):
+            Preview(param0)              // Passed without label
+        case .mixed(let param0, name: let name):
+            Mixed(param0, name: name)    // First without label, second with label
+        }
+    }
+}
+```
+
+If you need to add a label to an unlabeled parameter, use the mapping:
+
+```swift
+@Screen(["param0": "id"])
+case preview(Int)  // → Preview(id: param0)
+```
+
 ---
 
 ## Navigation Helpers

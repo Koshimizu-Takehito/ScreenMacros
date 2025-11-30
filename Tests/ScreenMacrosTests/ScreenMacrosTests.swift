@@ -425,8 +425,8 @@ struct AssociatedValueTests {
         )
     }
 
-    /// Ensures that unlabeled associated values generate proper pattern matching.
-    @Test("Unlabeled associated value generates param0, param1, etc.")
+    /// Ensures that unlabeled associated values are passed without labels.
+    @Test("Unlabeled associated value is passed without label")
     func unlabeledAssociatedValue() {
         assertScreenMacroExpansion(
             """
@@ -445,7 +445,7 @@ struct AssociatedValueTests {
                 var body: some View {
                     switch self {
                     case .detailScreen(let param0):
-                        DetailScreen(param0: param0)
+                        DetailScreen(param0)
                     }
                 }
             }
@@ -454,6 +454,7 @@ struct AssociatedValueTests {
     }
 
     /// Ensures that mixed labeled and unlabeled associated values work correctly.
+    /// Unlabeled parameters are passed without labels, labeled parameters keep their labels.
     @Test("Mixed labeled and unlabeled associated values")
     func mixedLabeledAndUnlabeledAssociatedValues() {
         assertScreenMacroExpansion(
@@ -473,7 +474,7 @@ struct AssociatedValueTests {
                 var body: some View {
                     switch self {
                     case .mixedScreen(let param0, name: let name):
-                        MixedScreen(param0: param0, name: name)
+                        MixedScreen(param0, name: name)
                     }
                 }
             }

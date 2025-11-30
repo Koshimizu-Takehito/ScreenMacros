@@ -21,6 +21,19 @@ import SwiftUI
 /// }
 /// ```
 ///
+/// ## Unlabeled Associated Values
+///
+/// When an associated value has no label, it is passed to the View without a label.
+/// This allows Views with unlabeled initializer parameters to work seamlessly.
+///
+/// ```swift
+/// @Screens
+/// enum ScreenID: Hashable {
+///     case detail(Int)         // → Detail(param0) - passed without label
+///     case mixed(Int, name: String)  // → Mixed(param0, name: name)
+/// }
+/// ```
+///
 /// ## After macro expansion
 ///
 /// ```swift

@@ -8,6 +8,7 @@ import SwiftUI
 /// This enum demonstrates:
 /// - Automatic View type inference from case names
 /// - Associated values for passing data between screens
+/// - Unlabeled associated values (passed without labels)
 /// - Parameter mapping with `@Screen`
 ///
 /// ## Usage with NavigationStack
@@ -25,6 +26,10 @@ enum Screen: Hashable {
 
     /// Detail screen with ID - inferred as `Detail(id:)`
     case detail(id: Int)
+
+    /// Preview screen with unlabeled parameter - inferred as `Preview(param0)`
+    /// The View's init uses `init(_ itemId: Int)`, so no label is needed.
+    case preview(Int)
 
     /// Search screen - inferred as `Search()`
     case search

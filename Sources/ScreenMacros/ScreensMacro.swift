@@ -78,20 +78,34 @@ private struct CaseInfo {
     ///
     /// Examples:
     /// - No parameters: `HomeScreen()`
-    /// - With parameters: `DetailScreen(id: id)`
+    /// - With labeled parameters: `DetailScreen(id: id)`
+    /// - With unlabeled parameters: `DetailScreen(param0)` (passed without label)
     /// - With mapping: `ProfileView(detailId: id)` (when `["id": "detailId"]` mapping is applied)
+    /// - With mapping to unlabeled: `DetailView(param0)` (when `["id": "_"]` mapping is applied)
     func viewInitializer() -> String {
         if parameters.isEmpty {
             return "\(viewType)()"
         }
 
         let args = parameters.map { param -> String in
-            // Use the case label (or generated name) as the source
-            let sourceLabel = param.label ?? param.name
+            // For unlabeled parameters, pass without label by default
+            if param.label == nil {
+                // Check if there's a mapping to add a label
+                if let mappedLabel = parameterMapping[param.name], mappedLabel != "_" {
+                    return "\(mappedLabel): \(param.name)"
+                }
+                // Default: pass without label
+                return param.name
+            }
 
-            // Check if there's a mapping for this parameter
+            // For labeled parameters, use mapping or original label
+            let sourceLabel = param.label!
             let targetLabel = parameterMapping[sourceLabel] ?? sourceLabel
 
+            // "_" means pass without label
+            if targetLabel == "_" {
+                return param.name
+            }
             return "\(targetLabel): \(param.name)"
         }.joined(separator: ", ")
 

@@ -151,6 +151,36 @@ enum Screen: Hashable {
 }
 ```
 
+## Unlabeled Associated Values
+
+When an associated value has no label, it is passed to the View without a label. This works seamlessly with Views that have unlabeled initializer parameters:
+
+```swift
+@Screens
+enum Screen: Hashable {
+    case preview(Int)  // → Preview(param0) - passed without label
+}
+
+struct Preview: View {
+    let itemId: Int
+    
+    init(_ itemId: Int) {  // Unlabeled initializer
+        self.itemId = itemId
+    }
+    
+    var body: some View {
+        Text("Preview: \(itemId)")
+    }
+}
+```
+
+If you need to add a label to an unlabeled parameter, use the mapping:
+
+```swift
+@Screen(["param0": "id"])
+case preview(Int)  // → Preview(id: param0)
+```
+
 ## Next Steps
 
 - Explore parameter mapping with ``Screen(_:_:)``
