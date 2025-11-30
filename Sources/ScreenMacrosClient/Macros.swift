@@ -120,6 +120,8 @@ public macro Screens() = #externalMacro(
 /// Specify a mapping from case parameter names to View initializer parameter names.
 /// - Keys must be string literals matching the case's parameter labels
 ///   (e.g. `id`, `userId`). Unused keys are ignored.
+/// - For unlabeled associated values, use the generated parameter names (`param0`, `param1`, ...) as keys.
+/// - A mapping value of `"_"` means "call the initializer without a label" for that parameter.
 ///
 /// ```swift
 /// @Screen(DetailView.self, ["id": "detailId"])

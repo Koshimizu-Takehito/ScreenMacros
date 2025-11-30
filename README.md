@@ -234,6 +234,8 @@ extension Screen: View, ScreenMacros.Screens {
 ```
 
 - Mapping keys must match case parameter labels.
+- For unlabeled associated values, use the generated parameter names (`param0`, `param1`, ...) as mapping keys.
+- A mapping value of `"_"` means "call the initializer without a label" for that parameter.
 - Unmapped parameters are passed through unchanged.
 
 ---
@@ -342,6 +344,13 @@ If you need to add a label to an unlabeled parameter, use the mapping:
 ```swift
 @Screen(["param0": "id"])
 case preview(Int)  // → Preview(id: param0)
+```
+
+You can also use `"_"` as a mapping value when you want to remove a label from a labeled parameter:
+
+```swift
+@Screen(DetailView.self, ["id": "_"])
+case detail(id: Int)  // → DetailView(id)
 ```
 
 ---

@@ -181,6 +181,13 @@ If you need to add a label to an unlabeled parameter, use the mapping:
 case preview(Int)  // → Preview(id: param0)
 ```
 
+You can also use `"_"` as the mapping value when you want to remove a label from a labeled parameter:
+
+```swift
+@Screen(DetailView.self, ["id": "_"])
+case detail(id: Int)  // → DetailView(id)
+```
+
 ## Next Steps
 
 - Explore parameter mapping with ``Screen(_:_:)``
