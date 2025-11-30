@@ -1,0 +1,79 @@
+# SwiftFormat Configuration for ScreenMacros
+
+# File options
+--exclude .build,Example
+
+# Format options
+--swiftversion 6.0
+
+# Indentation
+--indent 4
+--tabwidth 4
+--smarttabs enabled
+--indentcase false
+
+# Wrapping
+--maxwidth 120
+--wraparguments before-first
+--wrapparameters before-first
+--wrapcollections before-first
+--wrapconditions after-first
+--wrapreturntype preserve
+--wrapeffects preserve
+--wraptypealiases before-first
+--closingparen balanced
+
+# Spacing
+--operatorfunc spaced
+--ranges spaced
+--typeattributes prev-line
+--funcattributes prev-line
+--varattributes prev-line
+--storedvarattrs same-line
+--computedvarattrs same-line
+
+# Braces
+--allman false
+--elseposition same-line
+--guardelse same-line
+
+# Blank lines
+--trimwhitespace always
+--insertlines enabled
+--removelines enabled
+--emptybraces no-space
+
+# Semicolons
+--semicolons never
+
+# Imports
+--importgrouping alpha
+
+# Redundancy
+--self remove
+--redundanttype inferred
+
+# Naming
+--extensionacl on-declarations
+
+# Other
+--commas always
+--decimalgrouping 3
+--binarygrouping 4,8
+--hexgrouping 4,8
+--fractiongrouping disabled
+--exponentgrouping disabled
+--hexliteralcase uppercase
+--exponentcase lowercase
+--header ignore
+--ifdef indent
+--marktypes never
+--markextensions never
+--organizetypes actor,class,struct,enum
+--modifierorder acl,override,setterACL,dynamic,mutating,lazy,final,required,convenience,typeMethods,owned
+
+# Disabled rules (to match existing code style)
+--disable blankLinesAtStartOfScope
+--disable blankLinesAtEndOfScope
+--disable wrapMultilineStatementBraces
+--disable preferKeyPath

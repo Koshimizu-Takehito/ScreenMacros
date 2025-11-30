@@ -1,3 +1,4 @@
+// swiftlint:disable file_length
 import SwiftSyntax
 import SwiftSyntaxBuilder
 import SwiftSyntaxMacros
@@ -7,7 +8,7 @@ import Testing
 #if canImport(ScreenMacrosImpl)
 import ScreenMacrosImpl
 
-private nonisolated(unsafe) let testMacros: [String: Macro.Type] = [
+nonisolated(unsafe) private let testMacros: [String: Macro.Type] = [
     "Screens": ScreensMacro.self,
     "Screen": ScreenMacro.self,
 ]
