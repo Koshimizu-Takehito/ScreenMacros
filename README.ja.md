@@ -504,6 +504,7 @@ make setup
 | コマンド | 説明 |
 |---------|------|
 | `make setup` | Mint（必要な場合は自動インストール）と依存パッケージをインストール |
+| `make sync` | 最新の変更を取得し、すべての依存関係を更新 |
 | `make build` | パッケージをビルド |
 | `make test` | テストを実行 |
 | `make lint` | SwiftLint を実行 |
