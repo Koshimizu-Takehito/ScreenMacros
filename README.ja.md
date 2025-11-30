@@ -52,6 +52,7 @@ extension Screen: View, ScreenMacros.Screens {
 - [Associated Values](#associated-values)
 - [ナビゲーションヘルパー](#ナビゲーションヘルパー)
 - [ForEach ヘルパー](#foreach-ヘルパー)
+- [開発](#開発)
 - [ライセンス](#ライセンス)
 
 ## 動作環境
@@ -432,6 +433,49 @@ TabView {
 VStack {
     ScreensForEachView(TabScreen.self)
 }
+```
+
+---
+
+## 開発
+
+### 必要環境
+
+- macOS 14.0+
+- Xcode 16.0+
+- [Mint](https://github.com/yonaskolb/Mint)（`make setup` で自動インストール）
+
+### セットアップ
+
+```bash
+# リポジトリをクローン
+git clone https://github.com/Koshimizu-Takehito/ScreenMacros.git
+cd ScreenMacros
+
+# 依存関係をインストール
+make setup
+```
+
+### 利用可能なコマンド
+
+| コマンド | 説明 |
+|---------|------|
+| `make setup` | Mint と依存パッケージをインストール |
+| `make build` | パッケージをビルド |
+| `make test` | テストを実行 |
+| `make lint` | SwiftLint を実行 |
+| `make format` | SwiftFormat でコードを整形 |
+| `make format-check` | コードフォーマットをチェック（CI 用） |
+| `make ci` | すべての CI チェックを実行 |
+| `make clean` | ビルド成果物を削除 |
+| `make help` | 利用可能なコマンドを表示 |
+
+### PR を提出する前に
+
+ローカルで CI チェックを実行して、変更が通ることを確認してください：
+
+```bash
+make ci
 ```
 
 ---

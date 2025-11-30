@@ -52,6 +52,7 @@ You can now use `Screen` directly as a SwiftUI `View`.
 - [Associated Values](#associated-values)
 - [Navigation Helpers](#navigation-helpers)
 - [ForEach Helpers](#foreach-helpers)
+- [Development](#development)
 - [License](#license)
 
 ## Requirements
@@ -432,6 +433,49 @@ Renders all cases directly as Views:
 VStack {
     ScreensForEachView(TabScreen.self)
 }
+```
+
+---
+
+## Development
+
+### Requirements
+
+- macOS 14.0+
+- Xcode 16.0+
+- [Mint](https://github.com/yonaskolb/Mint) (installed automatically via `make setup`)
+
+### Setup
+
+```bash
+# Clone the repository
+git clone https://github.com/Koshimizu-Takehito/ScreenMacros.git
+cd ScreenMacros
+
+# Install dependencies
+make setup
+```
+
+### Available Commands
+
+| Command | Description |
+|---------|-------------|
+| `make setup` | Install Mint and dependencies |
+| `make build` | Build the package |
+| `make test` | Run tests |
+| `make lint` | Run SwiftLint |
+| `make format` | Format code with SwiftFormat |
+| `make format-check` | Check code formatting (CI) |
+| `make ci` | Run all CI checks |
+| `make clean` | Clean build artifacts |
+| `make help` | Show available commands |
+
+### Before Submitting a PR
+
+Run all CI checks locally to ensure your changes pass:
+
+```bash
+make ci
 ```
 
 ---

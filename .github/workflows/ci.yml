@@ -30,27 +30,17 @@ jobs:
       - name: Show Swift version
         run: swift --version
 
+      - name: Setup
+        run: make setup
+
       - name: Build
-        run: swift build
+        run: make build
 
-      - name: Run tests
-        run: swift test
+      - name: Lint
+        run: make lint
 
-  lint:
-    name: Lint
-    runs-on: macos-14
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - name: Format Check
+        run: make format-check
 
-      - name: Install Mint
-        run: brew install mint
-
-      - name: Bootstrap Mint packages
-        run: mint bootstrap
-
-      - name: Run SwiftLint
-        run: mint run swiftlint lint --strict
-
-      - name: Run SwiftFormat
-        run: mint run swiftformat Sources Tests --lint
+      - name: Test
+        run: make test
