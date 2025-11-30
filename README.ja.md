@@ -107,8 +107,7 @@ dependencies: [
 ### サンプルの実行方法
 
 ```bash
-cd Example
-open ScreenMacrosExample.xcodeproj
+xed Example
 ```
 
 Xcode でビルドして実行します。初回ビルド時はマクロを信頼する必要があります:
@@ -441,8 +440,8 @@ VStack {
 
 ### 必要環境
 
-- macOS 14.0+
-- Xcode 16.0+
+- macOS 15.0+
+- Xcode 16.0+（Swift 6.0+）
 - [Mint](https://github.com/yonaskolb/Mint)（`make setup` 実行時に Homebrew があれば自動インストール）
 
 ### セットアップ

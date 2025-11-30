@@ -107,8 +107,7 @@ A complete example iOS app is included in the `Example/` directory. It demonstra
 ### Running the Example
 
 ```bash
-cd Example
-open ScreenMacrosExample.xcodeproj
+xed Example
 ```
 
 Then build and run in Xcode. The first time you build, you may need to trust the macro:
@@ -441,8 +440,8 @@ VStack {
 
 ### Requirements
 
-- macOS 14.0+
-- Xcode 16.0+
+- macOS 15.0+
+- Xcode 16.0+ (Swift 6.0+)
 - [Mint](https://github.com/yonaskolb/Mint) (installed automatically via `make setup` when Homebrew is available)
 
 ### Setup
