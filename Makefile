@@ -1,4 +1,4 @@
-.PHONY: setup lint format format-check test build clean help
+.PHONY: setup sync lint format format-check test build clean help
 
 # Default target
 .DEFAULT_GOAL := help
@@ -22,6 +22,15 @@ setup: ## Install Mint (if needed) and dependencies via Mint
 	@echo "📦 Installing packages from Mintfile..."
 	@mint bootstrap
 	@echo "✅ Setup complete!"
+
+sync: ## Pull latest changes and update all dependencies
+	@echo "🔄 Pulling latest changes..."
+	@git pull
+	@echo "📦 Updating Mint packages..."
+	@mint bootstrap
+	@echo "📦 Resolving Swift packages..."
+	@swift package resolve
+	@echo "✅ Sync complete!"
 
 # ============================================================================
 # Linting & Formatting
