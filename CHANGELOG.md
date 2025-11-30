@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.6] - 2025-11-30
+
+### Added
+
+- GitHub Issue templates for bug reports and feature requests
+
+### Fixed
+
+- Fixed incorrect filename references in Example project structure documentation
+- Removed unnecessary `Hashable` from macro feature examples in README
+
 ## [1.0.5] - 2025-11-30
 
 ### Changed
@@ -89,7 +100,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Swift 6.0+
 - iOS 17.0+ / macOS 14.0+
 
-[Unreleased]: https://github.com/Koshimizu-Takehito/ScreenMacros/compare/v1.0.5...HEAD
+[Unreleased]: https://github.com/Koshimizu-Takehito/ScreenMacros/compare/v1.0.6...HEAD
+[1.0.6]: https://github.com/Koshimizu-Takehito/ScreenMacros/compare/v1.0.5...v1.0.6
 [1.0.5]: https://github.com/Koshimizu-Takehito/ScreenMacros/compare/v1.0.4...v1.0.5
 [1.0.4]: https://github.com/Koshimizu-Takehito/ScreenMacros/compare/v1.0.3...v1.0.4
 [1.0.3]: https://github.com/Koshimizu-Takehito/ScreenMacros/compare/v1.0.2...v1.0.3
