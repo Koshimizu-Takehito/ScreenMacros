@@ -98,7 +98,7 @@ enum Screen: Hashable {
 
 ```swift
 NavigationStack(path: $path) {
-    HomeView()
+    Home()
         .navigationDestination(Screen.self)
 }
 .sheet(item: $presentedModal)

@@ -125,7 +125,7 @@ Example/
     ├── ContentView.swift             # Main view with TabView
     ├── Info.plist
     ├── Screens/
-    │   ├── Screen.swift            # Navigation screens
+    │   ├── Screen.swift              # Navigation screens
     │   ├── TabScreen.swift           # Tab bar screens
     │   ├── ModalScreen.swift         # Sheet screens
     │   └── FullScreen.swift          # Full-screen cover screens
@@ -157,8 +157,8 @@ If no `@Screen` attributes are present, View types are inferred from case names 
 ```swift
 @Screens
 enum Screen {
-    case gameOfLifeScreen  // → GameOfLifeScreen()
-    case mosaicScreen      // → MosaicScreen()
+    case home           // → Home()
+    case detail(id: Int)  // → Detail(id: id)
 }
 ```
 
@@ -169,10 +169,10 @@ extension Screen: View, ScreenMacros.Screens {
     @MainActor @ViewBuilder
     var body: some View {
         switch self {
-        case .gameOfLifeScreen:
-            GameOfLifeScreen()
-        case .mosaicScreen:
-            MosaicScreen()
+        case .home:
+            Home()
+        case .detail(id: let id):
+            Detail(id: id)
         }
     }
 }
@@ -186,23 +186,23 @@ extension Screen: View, ScreenMacros.Screens {
 #### Specify View type
 
 ```swift
-@Screen(CustomView.self)
-case customScreen  // → CustomView()
+@Screen(ProfileView.self)
+case profile  // → ProfileView() instead of Profile()
 ```
 
 #### Specify View type with parameter mapping
 
 ```swift
-@Screen(DetailView.self, ["id": "detailId"])
-case detail(id: Int)  // → DetailView(detailId: id)
+@Screen(ProfileView.self, ["userId": "id"])
+case profile(userId: Int)  // → ProfileView(id: userId)
 ```
 
 #### Parameter mapping only (View type inferred)
 
 ```swift
-@Screen(["foo": "image"])
-case multiColorImage(foo: Image, colors: [Color])
-// → MultiColorImage(image: foo, colors: colors)
+@Screen(["userId": "id"])
+case editProfile(userId: Int)
+// → EditProfile(id: userId)
 ```
 
 ---
@@ -213,9 +213,9 @@ When case labels differ from View initializer parameter names, provide a mapping
 
 ```swift
 @Screens
-enum Screen {
-    @Screen(ProfileView.self, ["userId": "id", "showEdit": "editable"])
-    case profile(userId: Int, showEdit: Bool)
+enum Screen: Hashable {
+    @Screen(ProfileView.self, ["userId": "id"])
+    case profile(userId: Int)
 }
 ```
 
@@ -226,8 +226,8 @@ extension Screen: View, ScreenMacros.Screens {
     @MainActor @ViewBuilder
     var body: some View {
         switch self {
-        case .profile(userId: let userId, showEdit: let showEdit):
-            ProfileView(id: userId, editable: showEdit)
+        case .profile(userId: let userId):
+            ProfileView(id: userId)
         }
     }
 }
@@ -256,7 +256,8 @@ Example:
 ```swift
 @Screens
 public enum Screen {
-    case homeScreen
+    case home
+    case detail(id: Int)
 }
 ```
 
@@ -267,8 +268,10 @@ public extension Screen: View, ScreenMacros.Screens {
     @MainActor @ViewBuilder
     public var body: some View {
         switch self {
-        case .homeScreen:
-            HomeScreen()
+        case .home:
+            Home()
+        case .detail(id: let id):
+            Detail(id: id)
         }
     }
 }
@@ -289,9 +292,9 @@ This means `Optional`, `Result`, and other generic types work out of the box:
 
 ```swift
 @Screens
-enum Screen {
-    case optionalDetail(id: Int?)
-    case loadResult(result: Result<Int, Error>)
+enum Screen: Hashable {
+    case detail(id: Int?)
+    case loadResult(result: Result<String, Error>)
 }
 ```
 
@@ -302,8 +305,8 @@ extension Screen: View, ScreenMacros.Screens {
     @MainActor @ViewBuilder
     var body: some View {
         switch self {
-        case .optionalDetail(id: let id):
-            OptionalDetail(id: id)
+        case .detail(id: let id):
+            Detail(id: id)
         case .loadResult(result: let result):
             LoadResult(result: result)
         }
@@ -317,9 +320,9 @@ When an associated value has no label, it is passed to the View **without a labe
 
 ```swift
 @Screens
-enum Screen {
-    case preview(Int)                    // Unlabeled
-    case mixed(Int, name: String)        // Mixed: unlabeled + labeled
+enum Screen: Hashable {
+    case preview(Int)                      // Unlabeled
+    case article(Int, title: String)       // Mixed: unlabeled + labeled
 }
 ```
 
@@ -331,9 +334,9 @@ extension Screen: View, ScreenMacros.Screens {
     var body: some View {
         switch self {
         case .preview(let param0):
-            Preview(param0)              // Passed without label
-        case .mixed(let param0, name: let name):
-            Mixed(param0, name: name)    // First without label, second with label
+            Preview(param0)                        // Passed without label
+        case .article(let param0, title: let title):
+            Article(param0, title: title)          // First without label, second with label
         }
     }
 }
@@ -349,8 +352,8 @@ case preview(Int)  // → Preview(id: param0)
 You can also use `"_"` as a mapping value when you want to remove a label from a labeled parameter:
 
 ```swift
-@Screen(DetailView.self, ["id": "_"])
-case detail(id: Int)  // → DetailView(id)
+@Screen(Detail.self, ["id": "_"])
+case detail(id: Int)  // → Detail(id) – passed without label
 ```
 
 ---
@@ -375,7 +378,7 @@ struct ContentView: View {
 
     var body: some View {
         NavigationStack(path: $path) {
-            HomeView()
+            Home()
                 .navigationDestination(Screen.self)
         }
     }
@@ -398,19 +401,19 @@ Use `sheet(item:)` to present a sheet:
 @Screens
 enum ModalScreen: Hashable, Identifiable {
     case settings
-    case profile(userId: Int)
+    case editProfile(userId: Int)
 
     var id: Self { self }
 }
 
 struct ContentView: View {
-    @State private var presentedScreen: ModalScreen?
+    @State private var presentedModal: ModalScreen?
 
     var body: some View {
         Button("Show Settings") {
-            presentedScreen = .settings
+            presentedModal = .settings
         }
-        .sheet(item: $presentedScreen)
+        .sheet(item: $presentedModal)
     }
 }
 ```

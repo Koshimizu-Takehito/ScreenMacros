@@ -15,7 +15,7 @@ enum Screen {
 
 // Screen can now be used directly as a SwiftUI View
 NavigationStack(path: $path) {
-    HomeView()
+    Home()
         .navigationDestination(Screen.self)
 }
 ```

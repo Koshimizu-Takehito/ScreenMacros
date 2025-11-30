@@ -117,19 +117,19 @@ For modal presentations, use the `sheet(item:)` helper:
 @Screens
 enum ModalScreen: Identifiable, Hashable {
     case settings
-    case profile(userId: Int)
+    case editProfile(userId: Int)
     
     var id: Self { self }
 }
 
 struct ContentView: View {
-    @State private var modal: ModalScreen?
+    @State private var presentedModal: ModalScreen?
     
     var body: some View {
         Button("Show Settings") {
-            modal = .settings
+            presentedModal = .settings
         }
-        .sheet(item: $modal)
+        .sheet(item: $presentedModal)
     }
 }
 ```
@@ -142,8 +142,6 @@ When you need a different view type than the inferred name, use `@Screen`:
 @Screens
 enum Screen: Hashable {
     case home
-    
-    @Screen(CustomDetailView.self)
     case detail(id: Int)
     
     @Screen(ProfileView.self, ["userId": "id"])
@@ -184,8 +182,8 @@ case preview(Int)  // → Preview(id: param0)
 You can also use `"_"` as the mapping value when you want to remove a label from a labeled parameter:
 
 ```swift
-@Screen(DetailView.self, ["id": "_"])
-case detail(id: Int)  // → DetailView(id)
+@Screen(Detail.self, ["id": "_"])
+case detail(id: Int)  // → Detail(id) – passed without label
 ```
 
 ## Next Steps
