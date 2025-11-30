@@ -115,7 +115,7 @@ For modal presentations, use the `sheet(item:)` helper:
 
 ```swift
 @Screens
-enum ModalScreen: Identifiable, Hashable {
+enum ModalScreen: Hashable, Identifiable {
     case settings
     case editProfile(userId: Int)
     
@@ -140,7 +140,7 @@ When you need a different view type than the inferred name, use `@Screen`:
 
 ```swift
 @Screens
-enum Screen: Hashable {
+enum Screen {
     case home
     case detail(id: Int)
     
@@ -155,7 +155,7 @@ When an associated value has no label, it is passed to the View without a label.
 
 ```swift
 @Screens
-enum Screen: Hashable {
+enum Screen {
     case preview(Int)  // → Preview(param0) - passed without label
 }
 

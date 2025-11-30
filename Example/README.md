@@ -69,7 +69,7 @@ ScreenMacrosExample/
 
 ```swift
 @Screens
-enum Screen: Hashable {
+enum Screen {
     case home            // → Home()
     case detail(id: Int) // → Detail(id: id)
 }
@@ -79,7 +79,7 @@ enum Screen: Hashable {
 
 ```swift
 @Screens
-enum Screen: Hashable {
+enum Screen {
     case preview(Int)    // → Preview(param0) - passed without label
 }
 ```
@@ -88,7 +88,7 @@ enum Screen: Hashable {
 
 ```swift
 @Screens
-enum Screen: Hashable {
+enum Screen {
     @Screen(ProfileView.self, ["userId": "id"])
     case profile(userId: Int)  // → ProfileView(id: userId)
 }

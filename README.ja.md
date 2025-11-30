@@ -213,7 +213,7 @@ case の引数ラベルと View イニシャライザの引数名が異なる場
 
 ```swift
 @Screens
-enum Screen: Hashable {
+enum Screen {
     @Screen(ProfileView.self, ["userId": "id"])
     case profile(userId: Int)
 }
@@ -292,7 +292,7 @@ public extension Screen: View, ScreenMacros.Screens {
 
 ```swift
 @Screens
-enum Screen: Hashable {
+enum Screen {
     case detail(id: Int?)
     case loadResult(result: Result<String, Error>)
 }
@@ -320,7 +320,7 @@ extension Screen: View, ScreenMacros.Screens {
 
 ```swift
 @Screens
-enum Screen: Hashable {
+enum Screen {
     case preview(Int)                      // ラベルなし
     case article(Int, title: String)       // 混合: ラベルなし + ラベルあり
 }
