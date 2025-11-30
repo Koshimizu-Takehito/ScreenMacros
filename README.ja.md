@@ -121,7 +121,7 @@ Xcode でビルドして実行します。初回ビルド時はマクロを信�
 Example/
 ├── ScreenMacrosExample.xcodeproj
 └── ScreenMacrosExample/
-    ├── ScreenMacrosExampleApp.swift  # アプリのエントリーポイント
+    ├── App.swift                     # アプリのエントリーポイント
     ├── ContentView.swift             # TabView を含むメインビュー
     ├── Info.plist
     ├── Screens/
