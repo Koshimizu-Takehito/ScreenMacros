@@ -28,7 +28,6 @@
 --ranges spaced
 --typeattributes prev-line
 --funcattributes prev-line
---varattributes prev-line
 --storedvarattrs same-line
 --computedvarattrs same-line
 
@@ -66,7 +65,7 @@
 --hexliteralcase uppercase
 --exponentcase lowercase
 --header ignore
---ifdef indent
+--ifdef no-indent
 --marktypes never
 --markextensions never
 --organizetypes actor,class,struct,enum
@@ -77,3 +76,15 @@
 --disable blankLinesAtEndOfScope
 --disable wrapMultilineStatementBraces
 --disable preferKeyPath
+--disable unusedArguments
+--disable redundantReturn
+--disable opaqueGenericParameters
+--disable hoistPatternLet
+--disable elseOnSameLine
+--disable wrap
+--disable redundantOptionalBinding
+--disable redundantSelf
+--disable modifierOrder
+--disable trailingCommas
+--disable indent
+--disable wrapArguments

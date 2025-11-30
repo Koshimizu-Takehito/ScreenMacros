@@ -1,4 +1,3 @@
-// swiftlint:disable file_length
 import SwiftSyntax
 import SwiftSyntaxBuilder
 import SwiftSyntaxMacros
@@ -1148,6 +1147,7 @@ struct ErrorHandlingTests {
             """,
             diagnostics: [
                 DiagnosticSpec(
+                    // swiftlint:disable:next line_length
                     message: "Mapping keys [\"unknownKey1\", \"unknownKey2\"] do not match any parameter labels in case 'profileScreen' and will be ignored",
                     line: 3,
                     column: 5,
