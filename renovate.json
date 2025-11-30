@@ -7,29 +7,48 @@
     ":prConcurrentLimitNone",
     "schedule:weekly"
   ],
-  "labels": ["dependencies"],
+  "labels": [
+    "dependencies"
+  ],
   "packageRules": [
     {
-      "matchUpdateTypes": ["patch", "minor"],
+      "matchUpdateTypes": [
+        "patch",
+        "minor"
+      ],
       "automerge": true
     },
     {
-      "matchManagers": ["swift"],
-      "addLabels": ["swift"]
+      "matchManagers": [
+        "swift"
+      ],
+      "addLabels": [
+        "swift"
+      ]
     },
     {
-      "matchManagers": ["github-actions"],
-      "addLabels": ["ci"]
+      "matchManagers": [
+        "github-actions"
+      ],
+      "addLabels": [
+        "ci"
+      ]
     },
     {
-      "matchManagers": ["regex"],
-      "addLabels": ["tooling"]
+      "matchManagers": [
+        "custom.regex"
+      ],
+      "addLabels": [
+        "tooling"
+      ]
     }
   ],
   "customManagers": [
     {
       "customType": "regex",
-      "fileMatch": ["^Mintfile$"],
+      "managerFilePatterns": [
+        "/^Mintfile$/"
+      ],
       "matchStrings": [
         "(?<depName>[\\w-]+/[\\w-]+)@(?<currentValue>[\\d.]+)"
       ],
@@ -37,4 +56,3 @@
     }
   ]
 }
-
