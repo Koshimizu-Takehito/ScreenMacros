@@ -11,4 +11,3 @@ struct ScreenMacrosPlugin: CompilerPlugin {
         ScreensMacro.self,
     ]
 }
-

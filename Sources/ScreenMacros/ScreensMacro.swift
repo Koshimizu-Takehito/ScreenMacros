@@ -544,10 +544,12 @@ enum ScreenMacroDiagnostic: String, DiagnosticMessage {
         case .notAnEnum:
             return "@Screens can only be applied to an enum"
         case .invalidScreenAttribute:
+            // swiftlint:disable:next line_length
             return "@Screen expects a View type and/or a parameter mapping (e.g., @Screen(MyView.self), @Screen([\"id\": \"detailId\"]), @Screen(MyView.self, [\"id\": \"detailId\"]))"
         case .invalidMappingArgument:
             return "@Screen's second argument must be a dictionary literal (e.g., [\"id\": \"detailId\"])"
         case .unsupportedTypeExpression:
+            // swiftlint:disable:next line_length
             return "@Screen's View type expression is not supported. Use simple types, module-qualified types, or generic types (e.g., MyView.self, Module.MyView.self, GenericView<Int>.self)"
         }
     }

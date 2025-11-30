@@ -7,7 +7,7 @@ import Testing
 #if canImport(ScreenMacrosImpl)
 import ScreenMacrosImpl
 
-private nonisolated(unsafe) let testMacros: [String: Macro.Type] = [
+nonisolated(unsafe) private let testMacros: [String: Macro.Type] = [
     "Screens": ScreensMacro.self,
     "Screen": ScreenMacro.self,
 ]
@@ -1147,6 +1147,7 @@ struct ErrorHandlingTests {
             """,
             diagnostics: [
                 DiagnosticSpec(
+                    // swiftlint:disable:next line_length
                     message: "Mapping keys [\"unknownKey1\", \"unknownKey2\"] do not match any parameter labels in case 'profileScreen' and will be ignored",
                     line: 3,
                     column: 5,
