@@ -12,12 +12,13 @@ import SwiftUI
 ///
 /// ```swift
 /// @Screens
-/// enum ScreenID: Hashable {
-///     case gameOfLifeScreen    // Automatically gets @Screen → GameOfLifeScreen()
-///     case mosaicScreen        // Automatically gets @Screen → MosaicScreen()
+/// enum Screen: Hashable {
+///     case home           // Automatically gets @Screen → Home()
+///     case detail(id: Int) // Automatically gets @Screen → Detail(id: id)
+///     case search         // Automatically gets @Screen → Search()
 ///
-///     @Screen(CustomView.self)
-///     case customScreen        // Explicitly specified → CustomView()
+///     @Screen(ProfileView.self, ["userId": "id"])
+///     case profile(userId: Int)  // Explicitly specified → ProfileView(id: userId)
 /// }
 /// ```
 ///
@@ -28,32 +29,39 @@ import SwiftUI
 ///
 /// ```swift
 /// @Screens
-/// enum ScreenID: Hashable {
-///     case detail(Int)         // → Detail(param0) - passed without label
-///     case mixed(Int, name: String)  // → Mixed(param0, name: name)
+/// enum Screen: Hashable {
+///     case preview(Int)                 // → Preview(param0) - passed without label
+///     case article(Int, title: String)  // → Article(param0, title: title)
 /// }
 /// ```
 ///
 /// ## After macro expansion
 ///
 /// ```swift
-/// enum ScreenID: Hashable {
+/// enum Screen: Hashable {
 ///     @Screen
-///     case gameOfLifeScreen
+///     case home
 ///     @Screen
-///     case mosaicScreen
+///     case detail(id: Int)
+///     @Screen
+///     case search
 ///
-///     @Screen(CustomView.self)
-///     case customScreen
+///     @Screen(ProfileView.self, ["userId": "id"])
+///     case profile(userId: Int)
 /// }
 ///
-/// extension ScreenID: View, ScreenMacros.Screens {
+/// extension Screen: View, ScreenMacros.Screens {
 ///     @MainActor @ViewBuilder
 ///     var body: some View {
 ///         switch self {
-///         case .gameOfLifeScreen: GameOfLifeScreen()
-///         case .mosaicScreen: MosaicScreen()
-///         case .customScreen: CustomView()
+///         case .home:
+///             Home()
+///         case .detail(id: let id):
+///             Detail(id: id)
+///         case .search:
+///             Search()
+///         case .profile(userId: let userId):
+///             ProfileView(id: userId)
 ///         }
 ///     }
 /// }
@@ -63,8 +71,8 @@ import SwiftUI
 ///
 /// ```swift
 /// NavigationStack(path: $path) {
-///     ContentView()
-///         .navigationDestination(ScreenID.self)
+///     Home()
+///         .navigationDestination(Screen.self)
 /// }
 /// ```
 @attached(extension, conformances: View, Screens, names: named(body))
@@ -87,7 +95,7 @@ public macro Screens() = #externalMacro(
 ///
 /// ```swift
 /// @Screen
-/// case appleLogoScreen  // → AppleLogoScreen()
+/// case home  // → Home()
 /// ```
 ///
 /// ## With View type only
@@ -95,8 +103,8 @@ public macro Screens() = #externalMacro(
 /// Explicitly specify a View type.
 ///
 /// ```swift
-/// @Screen(CustomView.self)
-/// case myScreen  // → CustomView()
+/// @Screen(ProfileView.self)
+/// case profile  // → ProfileView()
 /// ```
 ///
 /// ## With module-qualified or generic types
@@ -124,8 +132,8 @@ public macro Screens() = #externalMacro(
 /// - A mapping value of `"_"` means "call the initializer without a label" for that parameter.
 ///
 /// ```swift
-/// @Screen(DetailView.self, ["id": "detailId"])
-/// case detail(id: Int)  // → DetailView(detailId: id)
+/// @Screen(ProfileView.self, ["userId": "id"])
+/// case profile(userId: Int)  // → ProfileView(id: userId)
 /// ```
 ///
 /// - Parameter viewType: The View type corresponding to this case (optional).
@@ -141,8 +149,8 @@ public macro Screen<V: View>(_ viewType: V.Type) = #externalMacro(
 /// Use this when the case's associated value labels differ from the View's initializer parameter names.
 ///
 /// ```swift
-/// @Screen(DetailView.self, ["id": "detailId"])
-/// case detail(id: Int)  // → DetailView(detailId: id)
+/// @Screen(ProfileView.self, ["userId": "id"])
+/// case profile(userId: Int)  // → ProfileView(id: userId)
 /// ```
 @attached(peer)
 public macro Screen<V: View>(_ viewType: V.Type, _ mapping: [String: String]) = #externalMacro(
@@ -157,9 +165,9 @@ public macro Screen<V: View>(_ viewType: V.Type, _ mapping: [String: String]) = 
 /// - Keys must be string literals matching the case's parameter labels.
 ///
 /// ```swift
-/// @Screen(["foo": "image"])
-/// case multiColorImage(foo: Image, colors: [Color])
-/// // → MultiColorImage(image: foo, colors: colors)
+/// @Screen(["userId": "id"])
+/// case editProfile(userId: Int)
+/// // → EditProfile(id: userId)
 /// ```
 @attached(peer)
 public macro Screen(_ mapping: [String: String]) = #externalMacro(

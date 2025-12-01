@@ -39,7 +39,8 @@ import SwiftUI
 enum Screen: Hashable {
     case home
     case detail(id: Int)
-    case settings
+    case preview(Int)
+    case search
 }
 ```
 
@@ -55,8 +56,10 @@ extension Screen: View, ScreenMacros.Screens {
             Home()
         case .detail(id: let id):
             Detail(id: id)
-        case .settings:
-            Settings()
+        case .preview(let param0):
+            Preview(param0)
+        case .search:
+            Search()
         }
     }
 }
@@ -81,9 +84,21 @@ struct Detail: View {
     }
 }
 
-struct Settings: View {
+struct Preview: View {
+    let itemId: Int
+    
+    init(_ itemId: Int) {
+        self.itemId = itemId
+    }
+    
     var body: some View {
-        Text("Settings")
+        Text("Preview: \(itemId)")
+    }
+}
+
+struct Search: View {
+    var body: some View {
+        Text("Search")
     }
 }
 ```
@@ -134,13 +149,38 @@ struct ContentView: View {
 }
 ```
 
+## Use with FullScreenCover
+
+For full-screen presentations, use the `fullScreenCover(item:)` helper:
+
+```swift
+@Screens
+enum FullScreen: Hashable, Identifiable {
+    case onboarding
+    case login
+    
+    var id: Self { self }
+}
+
+struct ContentView: View {
+    @State private var fullScreen: FullScreen?
+    
+    var body: some View {
+        Button("Start Onboarding") {
+            fullScreen = .onboarding
+        }
+        .fullScreenCover(item: $fullScreen)
+    }
+}
+```
+
 ## Custom View Mapping
 
 When you need a different view type than the inferred name, use `@Screen`:
 
 ```swift
 @Screens
-enum Screen {
+enum Screen: Hashable {
     case home
     case detail(id: Int)
     
@@ -149,13 +189,15 @@ enum Screen {
 }
 ```
 
+This maps the `profile(userId:)` case to `ProfileView(id:)`, converting the `userId` parameter to `id`.
+
 ## Unlabeled Associated Values
 
 When an associated value has no label, it is passed to the View without a label. This works seamlessly with Views that have unlabeled initializer parameters:
 
 ```swift
 @Screens
-enum Screen {
+enum Screen: Hashable {
     case preview(Int)  // → Preview(param0) - passed without label
 }
 
