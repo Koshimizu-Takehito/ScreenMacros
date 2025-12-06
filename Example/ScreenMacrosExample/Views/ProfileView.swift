@@ -76,3 +76,4 @@ private struct StatItem: View {
         ProfileView(id: 42)
     }
 }
+
