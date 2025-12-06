@@ -4,8 +4,8 @@ import SwiftSyntaxMacros
 import SwiftSyntaxMacrosTestSupport
 import Testing
 
-#if canImport(ScreenMacrosImpl)
-import ScreenMacrosImpl
+#if canImport(ScreenMacrosCore)
+import ScreenMacrosCore
 
 private let testMacros: [String: Macro.Type] = [
     "Screens": ScreensMacro.self,

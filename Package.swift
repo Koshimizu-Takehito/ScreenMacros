@@ -23,14 +23,24 @@ let package = Package(
         .package(url: "https://github.com/apple/swift-syntax.git", from: "602.0.0"),
     ],
     targets: [
+        // Core library containing macro implementations (importable for testing)
+        .target(
+            name: "ScreenMacrosCore",
+            dependencies: [
+                .product(name: "SwiftDiagnostics", package: "swift-syntax"),
+                .product(name: "SwiftSyntax", package: "swift-syntax"),
+                .product(name: "SwiftSyntaxMacros", package: "swift-syntax"),
+            ],
+            path: "Sources/ScreenMacrosCore"
+        ),
+        // Compiler plugin that wraps the core implementation
         .macro(
             name: "ScreenMacrosImpl",
             dependencies: [
-                .product(name: "SwiftSyntax", package: "swift-syntax"),
-                .product(name: "SwiftSyntaxMacros", package: "swift-syntax"),
+                "ScreenMacrosCore",
                 .product(name: "SwiftCompilerPlugin", package: "swift-syntax"),
             ],
-            path: "Sources/ScreenMacros"
+            path: "Sources/ScreenMacrosPlugin"
         ),
         .target(
             name: "ScreenMacros",
@@ -40,7 +50,7 @@ let package = Package(
         .testTarget(
             name: "ScreenMacrosTests",
             dependencies: [
-                "ScreenMacrosImpl",
+                "ScreenMacrosCore",
                 .product(name: "SwiftSyntaxMacrosTestSupport", package: "swift-syntax"),
             ]
         ),
